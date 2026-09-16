@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Touch of Dreams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0a0a12;
+    --bg-elev: #131320;
+    --bg-elev-2: #1a1a2a;
+    --purple: #8b5cf6;
+    --blue: #6366f1;
+    --glow: rgba(139,92,246,.45);
+    --text: #f4f3fb;
+    --text-dim: #9695ac;
+    --online: #22c55e;
+    --danger: #ef4a68;
+    --border: rgba(255,255,255,.06);
+    --grad: linear-gradient(135deg, var(--purple), var(--blue));
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background: radial-gradient(circle at 20% -10%, #1c1436 0%, var(--bg) 45%) fixed;
+    color: var(--text);
+    font-family:'Manrope', sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    min-height:100dvh;
+    padding:24px;
+  }
+
+  .phone{
+    width:390px;
+    height:820px;
+    background: var(--bg);
+    border-radius:44px;
+    border:10px solid #050508;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 40px 80px rgba(0,0,0,.6), 0 0 60px rgba(99,102,241,.08);
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .notch{
+    position:absolute;
+    top:0; left:50%; transform:translateX(-50%);
+    width:120px; height:26px;
+    background:#050508;
+    border-radius:0 0 18px 18px;
+    z-index:50;
+  }
+
+  .screen{
+    display:none;
+    flex-direction:column;
+    height:100%;
+    position:relative;
+  }
+  .screen.active{
+    display:flex;
+  }
+
+  .auth-screen{
+    padding:40px 26px;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+  }
+  .auth-screen::-webkit-scrollbar{ display:none; }
+
+  .auth-logo{
+    text-align:center;
+    margin-bottom:32px;
+  }
+  .auth-logo .title{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:28px;
+    background: var(--grad);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:4px;
+  }
+  .auth-logo .subtitle{
+    font-size:11px;
+    letter-spacing:.16em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+
+  .auth-form{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+
+  .form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .form-label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+  }
+
+  .input-group{
+    display:flex;
+    gap:0;
+    border-radius:12px;
+    overflow:hidden;
+    background: var(--bg-elev);
+    border:1px solid var(--border);
+    transition: .2s;
+  }
+  .input-group:focus-within{
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(139,92,246,.1);
+  }
+
+  .country-selector{
+    padding:12px 12px;
+    background: var(--bg-elev-2);
+    border-right:1px solid var(--border);
+    min-width:95px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    cursor:pointer;
+  }
+  .country-code{ font-size:13px; font-weight:600; color:var(--text); }
+  .country-flag{ font-size:16px; }
+
+  input.phone-input, input.name-input{
+    flex:1; background:none; border:none; padding:12px 14px; color:var(--text); font-family:'Manrope',sans-serif; font-size:14px; outline:none;
+  }
+  input::placeholder{ color:var(--text-dim); }
+
+  .btn-auth{
+    padding:14px; border-radius:12px; border:none; font-weight:600; font-size:15px; cursor:pointer; transition: .2s; margin-top:4px;
+  }
+  .btn-primary{ background: var(--grad); color:#fff; }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 8px 20px rgba(139,92,246,.3); }
+
+  .form-divider{ text-align:center; font-size:12px; color:var(--text-dim); margin:8px 0; position:relative; }
+  .form-divider span{ background:var(--bg); padding:0 8px; }
+  .form-divider::before{ content:''; display:block; position:absolute; top:50%; left:0; right:0; height:1px; background:var(--border); z-index:-1; }
+
+  .toggle-auth{ text-align:center; color:var(--text-dim); font-size:13px; margin-top:16px; }
+  .toggle-auth a{ color:var(--purple); text-decoration:none; font-weight:600; cursor:pointer; }
+
+  .profile-setup{ padding:30px 26px; display:flex; flex-direction:column; overflow-y:auto; }
+  .profile-setup::-webkit-scrollbar{ display:none; }
+  .profile-header{ text-align:center; margin-bottom:28px; }
+  .profile-header .title{ font-family:'Poppins',sans-serif; font-weight:700; font-size:22px; margin-bottom:4px; }
+  .profile-header .subtitle{ font-size:12.5px; color:var(--text-dim); }
+
+  .photo-upload-area{ display:flex; flex-direction:column; align-items:center; gap:14px; margin-bottom:28px; }
+  .avatar-preview{
+    width:120px; height:120px; border-radius:50%; background: var(--bg-elev-2); border: 2px dashed var(--purple); display:flex; align-items:center; justify-content:center; font-size:36px; color:var(--text-dim); box-shadow: 0 0 24px var(--glow); position:relative; overflow:hidden;
+  }
+  .avatar-preview img{ width:100%; height:100%; object-fit:cover; }
+  .photo-btn{ padding:10px 18px; border-radius:10px; border:1px solid var(--purple); background: rgba(139,92,246,.12); color:var(--text); font-size:13px; font-weight:600; cursor:pointer; }
+
+  .profile-form{ display:flex; flex-direction:column; gap:14px; }
+  .input-field{ display:flex; align-items:center; gap:12px; background: var(--bg-elev); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
+  .input-field input{ flex:1; background:none; border:none; color:var(--text); font-family:'Manrope',sans-serif; font-size:14px; outline:none; }
+
+  .app-header{ padding:52px 22px 14px; display:flex; align-items:center; justify-content:space-between; }
+  .app-title{ font-family:'Poppins', sans-serif; font-weight:800; font-size:23px; background: var(--grad); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .app-title small{ display:block; font-family:'Manrope', sans-serif; font-weight:600; font-size:11px; letter-spacing:.16em; color:var(--text-dim); -webkit-text-fill-color: var(--text-dim); margin-top:2px; }
+
+  .search-wrap{ padding: 4px 22px 14px; }
+  .search-box{ background: var(--bg-elev); border:1px solid var(--border); border-radius:16px; padding:12px 16px; display:flex; align-items:center; gap:10px; color: var(--text-dim); }
+  .search-box input{ background:none; border:none; outline:none; color:var(--text); font-family:'Manrope',sans-serif; font-size:14px; width:100%; }
+
+  .content{ flex:1; overflow-y:auto; padding-bottom:110px; }
+  .content::-webkit-scrollbar{ display:none; }
+
+  .section-label-row{ display:flex; justify-content:space-between; align-items:center; padding: 14px 22px 8px; }
+  .section-label{ font-size:11px; font-weight:700; letter-spacing:.14em; color: var(--text-dim); text-transform:uppercase; }
+
+  .row{ display:flex; align-items:center; gap:13px; padding:11px 22px; cursor:pointer; transition: background .15s; }
+  .row:hover{ background: rgba(255,255,255,.02); }
+
+  .avatar{
+    position:relative; width:52px; height:52px; border-radius:50%; background: var(--grad); display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:600; font-size:19px; color:#fff; flex-shrink:0; box-shadow: 0 0 16px var(--glow); overflow:hidden;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; }
+  .avatar.sm{ width:46px; height:46px; font-size:16px; }
+
+  .row-body{ flex:1; min-width:0; }
+  .row-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:3px; }
+  .row-name{ font-family:'Poppins',sans-serif; font-weight:600; font-size:15px; }
+  .row-time{ font-size:11.5px; color:var(--text-dim); flex-shrink:0; }
+  .row-sub{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .row-msg{ font-size:13px; color: var(--text-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+  .composer-trigger{ margin:14px 22px; padding:14px 16px; border-radius:16px; background: var(--bg-elev); border:1px solid var(--border); display:flex; align-items:center; gap:12px; cursor:pointer; }
+  .composer-placeholder{ flex:1; color: var(--text-dim); font-size:13.5px; }
+  .composer-photo-icon{ width:34px; height:34px; border-radius:10px; background: rgba(139,92,246,.12); color: var(--purple); display:flex; align-items:center; justify-content:center; }
+
+  .post-card{ margin:0 0 10px; padding:16px 22px 8px; border-bottom: 8px solid rgba(255,255,255,.02); }
+  .post-header{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .post-author-name{ font-family:'Poppins',sans-serif; font-weight:600; font-size:14.5px; }
+  .post-meta{ font-size:11.5px; color: var(--text-dim); margin-top:1px; }
+  .post-caption{ font-size:14px; line-height:1.5; margin-bottom:10px; white-space:pre-wrap; word-break:break-word; }
+  .post-images{ display:grid; gap:3px; border-radius:14px; overflow:hidden; margin-bottom:8px; }
+  .post-images.count-1{ grid-template-columns:1fr; }
+  .post-img{ width:100%; max-height:340px; object-fit:cover; display:block; background: var(--bg-elev); }
+  .post-video{ width:100%; max-height:450px; border-radius:14px; margin-bottom:8px; background:#000; display:block; }
+
+  .chat-overlay{ position:absolute; inset:0; background: var(--bg); z-index:350; display:none; flex-direction:column; }
+  .chat-overlay.show{ display:flex; }
+  .chat-header{ padding:40px 18px 12px; background: var(--bg-elev); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+  .chat-header .back-btn, .chat-header .add-member-btn, .chat-header .call-btn{ width:36px; height:36px; border-radius:10px; background:var(--bg-elev-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text); cursor:pointer; flex-shrink:0; }
+  .chat-user-info{ flex:1; }
+  .chat-user-name{ font-family:'Poppins',sans-serif; font-weight:700; font-size:15px; }
+  .chat-user-status{ font-size:11px; color:var(--online); }
+
+  .chat-messages{ flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  .chat-messages::-webkit-scrollbar{ display:none; }
+  .msg-bubble{ max-width:75%; padding:10px 14px; border-radius:18px; font-size:13.5px; line-height:1.4; word-break:break-word; }
+  .msg-bubble.sent{ align-self:flex-end; background: var(--grad); color:#fff; border-bottom-right-radius:4px; }
+  .msg-bubble.received{ align-self:flex-start; background: var(--bg-elev-2); color:var(--text); border-bottom-left-radius:4px; border:1px solid var(--border); }
+
+  .chat-mic-btn{ width:40px; height:40px; border-radius:50%; background:var(--bg-elev-2); border:1px solid var(--border); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; transition:.2s; }
+  .chat-mic-btn.recording{ background:var(--danger); color:#fff; animation: pulse 1.5s infinite; }
+  .chat-audio-player{ max-width:200px; height:36px; outline:none; border-radius:20px; margin-top:2px; display:block; }
+
+  .chat-input-bar{ padding:10px 16px 20px; background: var(--bg-elev); border-top:1px solid var(--border); display:flex; align-items:center; gap:8px; }
+  .chat-input-bar input{ flex:1; background: var(--bg-elev-2); border:1px solid var(--border); border-radius:24px; padding:11px 16px; color:var(--text); font-family:'Manrope',sans-serif; font-size:13.5px; outline:none; }
+  .chat-send-btn{ width:40px; height:40px; border-radius:50%; background:var(--grad); color:#fff; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; flex-shrink:0; }
+
+  .call-overlay{ position:absolute; inset:0; background: radial-gradient(circle at 50% 30%, #1a1630 0%, #080810 100%); z-index:600; display:none; flex-direction:column; justify-content:space-between; padding:60px 24px 50px; text-align:center; }
+  .call-overlay.show{ display:flex; }
+  .call-header-info{ display:flex; flex-direction:column; align-items:center; gap:8px; z-index:2; }
+  .call-title{ font-family:'Poppins',sans-serif; font-weight:700; font-size:22px; }
+  .call-status{ font-size:13px; color:var(--purple); font-weight:600; }
+  
+  .call-avatar-wrap{ position:relative; margin:auto; display:flex; justify-content:center; align-items:center; }
+  .call-avatar{ width:120px; height:120px; border-radius:50%; border:3px solid var(--purple); box-shadow: 0 0 30px var(--glow); overflow:hidden; z-index:2; }
+  .call-avatar img{ width:100%; height:100%; object-fit:cover; }
+  .pulse-ring{ position:absolute; width:120px; height:120px; border-radius:50%; background: rgba(139,92,246,0.3); animation: pulse 2s infinite; z-index:1; }
+  @keyframes pulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.4); opacity: 0; }
+    100% { transform: scale(0.95); opacity: 0; }
+  }
+
+  .video-call-wrap{ position:relative; width:100%; height:320px; margin:auto; background:#111; border-radius:24px; overflow:hidden; border:1px solid var(--border); display:flex; justify-content:center; align-items:center; }
+  .remote-video{ width:100%; height:100%; object-fit:cover; }
+  .local-video{ position:absolute; right:12px; bottom:12px; width:90px; height:120px; border-radius:14px; object-fit:cover; border:2px solid var(--purple); background:#222; box-shadow:0 4px 12px rgba(0,0,0,0.5); }
+  .video-placeholder{ display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--text-dim); font-size:14px; }
+
+  .call-members-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; width:100%; max-height:260px; overflow-y:auto; margin:auto; padding:8px; }
+  .call-member-card{ background:var(--bg-elev); border:1px solid var(--border); padding:12px; border-radius:16px; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .call-member-avatar{ width:50px; height:50px; border-radius:50%; overflow:hidden; }
+  .call-member-avatar img{ width:100%; height:100%; object-fit:cover; }
+  .call-member-name{ font-size:12px; font-weight:600; }
+  
+  .call-controls{ display:flex; justify-content:center; align-items:center; gap:18px; z-index:2; }
+  .call-btn-action{ width:56px; height:56px; border-radius:50%; background:var(--bg-elev-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text); cursor:pointer; transition:.2s; }
+  .call-btn-action.accept{ background:var(--online); border:none; color:#fff; box-shadow: 0 0 20px rgba(34,197,94,0.4); }
+  .call-btn-action.active{ background:var(--purple); color:#fff; }
+  .call-btn-action.end{ background:var(--danger); border:none; color:#fff; width:64px; height:64px; box-shadow: 0 0 20px rgba(239,74,104,0.4); }
+
+  .create-post-header{ display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid var(--border); }
+  .cp-icon-btn{ width:36px; height:36px; border-radius:10px; background: var(--bg-elev); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color: var(--text); cursor:pointer; }
+  .cp-post-btn{ padding:9px 18px; border-radius:20px; background: var(--grad); color:#fff; font-weight:700; font-size:13px; border:none; cursor:pointer; }
+  .cp-body{ padding:16px 20px; overflow-y:auto; flex:1; }
+  .cp-author-row{ display:flex; align-items:center; gap:11px; margin-bottom:12px; }
+  .caption-textarea{ width:100%; min-height:90px; background:none; border:none; color: var(--text); font-family:'Manrope',sans-serif; font-size:15px; outline:none; resize:none; margin-bottom:14px; }
+
+  .image-preview-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:16px; }
+  .image-preview-item{ position:relative; aspect-ratio:1; border-radius:10px; overflow:hidden; background: var(--bg-elev); }
+  .image-preview-item img{ width:100%; height:100%; object-fit:cover; }
+  .image-remove-btn{ position:absolute; top:4px; right:4px; width:22px; height:22px; border-radius:50%; background: rgba(0,0,0,.6); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; }
+
+  .profile-card{ margin:14px 22px 6px; padding:18px; border-radius:20px; background: linear-gradient(145deg, var(--bg-elev), var(--bg-elev-2)); border:1px solid var(--border); display:flex; align-items:center; gap:14px; }
+  .profile-name{ font-family:'Poppins',sans-serif; font-weight:600; font-size:17px; }
+  .profile-user{ color:var(--text-dim); font-size:13px; margin-top:2px; }
+
+  .settings-tile{ display:flex; align-items:center; gap:14px; padding:13px 22px; cursor:pointer; }
+  .settings-tile .ic{ width:36px; height:36px; border-radius:10px; background: var(--bg-elev); display:flex; align-items:center; justify-content:center; color: var(--purple); flex-shrink:0; }
+  .settings-tile.danger .ic{ color: var(--danger); }
+  .settings-tile.danger span{ color: var(--danger); font-weight:600; }
+
+  .bottom-nav{
+    position:absolute; left:0; right:0; bottom:0; background: rgba(19,19,32,.85); backdrop-filter: blur(18px); border-top:1px solid var(--border); display:flex; padding:10px 8px calc(14px + env(safe-area-inset-bottom)); z-index:30;
+  }
+  .nav-item{ flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; color: var(--text-dim); cursor:pointer; font-size:11px; font-weight:600; transition:.2s; position:relative; }
+  .nav-item svg{ width:23px; height:23px; }
+  .nav-item.active{ color: var(--text); }
+  .nav-item.active svg{ color: var(--purple); filter: drop-shadow(0 0 6px var(--glow)); }
+  .nav-item.active::before{ content:''; position:absolute; top:-10px; width:26px; height:3px; border-radius:3px; background: var(--grad); }
+
+  .tab-panel{ display:none; }
+  .tab-panel.active{ display:block; }
+  .hidden-file-input{ display:none; }
+
+  .toast{
+    position:fixed; bottom:40px; left:50%; transform:translateX(-50%); background: var(--bg-elev-2); border:1px solid var(--border); color:var(--text); padding:12px 20px; border-radius:30px; font-size:12.5px; z-index:700; display:none; box-shadow: 0 8px 20px rgba(0,0,0,.4); text-align:center;
+  }
+  .toast.show{ display:block; }
+
+  .modal-overlay{ position:absolute; inset:0; background: rgba(0,0,0,0.8); z-index:400; display:none; flex-direction:column; padding:30px 22px; backdrop-filter: blur(8px); }
+  .modal-overlay.show{ display:flex; }
+  .modal-box{ background: var(--bg-elev); border:1px solid var(--border); border-radius:20px; padding:20px; display:flex; flex-direction:column; gap:14px; max-height:85%; overflow-y:auto; }
+
+  @media (max-width:600px){
+    html, body{ padding:0; }
+    .phone{ width:100%; height:100vh; height:100dvh; border-radius:0; border:none; box-shadow:none; }
+    .notch{ display:none; }
+    .app-header{ padding-top:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- LOGIN SCREEN -->
+  <div class="screen active" id="screenLogin">
+    <div class="auth-screen">
+      <div class="auth-logo">
+        <div class="title">Touch of Dreams</div>
+        <div class="subtitle">Secure Login</div>
+      </div>
+
+      <form class="auth-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <div class="input-group">
+            <div class="country-selector">
+              <span class="country-flag">🇧🇩</span>
+              <span class="country-code">+880</span>
+            </div>
+            <input type="tel" class="phone-input" id="loginPhone" placeholder="1234567890" maxlength="10" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <div class="input-group">
+            <input type="text" class="name-input" id="loginName" placeholder="Your Name" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth btn-primary">Login</button>
+      </form>
+
+      <div class="form-divider"><span>Don't have an account?</span></div>
+      <div class="toggle-auth">
+        <a onclick="switchScreen('screenRegister')">Create Account</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER SCREEN -->
+  <div class="screen" id="screenRegister">
+    <div class="auth-screen">
+      <div class="auth-logo">
+        <div class="title">Touch of Dreams</div>
+        <div class="subtitle">Create Account</div>
+      </div>
+
+      <form class="auth-form" onsubmit="handleRegisterSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <div class="input-group">
+            <div class="country-selector">
+              <span class="country-flag">🇧🇩</span>
+              <span class="country-code">+880</span>
+            </div>
+            <input type="tel" class="phone-input" id="regPhone" placeholder="1234567890" maxlength="10" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <div class="input-group">
+            <input type="text" class="name-input" id="regName" placeholder="Your Name" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth btn-primary">Create Account</button>
+      </form>
+
+      <div class="form-divider"><span>Already have an account?</span></div>
+      <div class="toggle-auth">
+        <a onclick="switchScreen('screenLogin')">Login Here</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE SETUP SCREEN -->
+  <div class="screen" id="screenProfileSetup">
+    <div class="profile-setup">
+      <div class="profile-header">
+        <div class="title">Complete Your Profile</div>
+        <div class="subtitle">প্রোফাইল ছবি দেওয়া বাধ্যতামূলক</div>
+      </div>
+
+      <form class="profile-form" onsubmit="handleProfileComplete(event)">
+        <div class="photo-upload-area">
+          <div class="avatar-preview">
+            <span id="avatarPlaceholder">📷</span>
+            <img id="setupAvatarImg" style="display:none;" />
+          </div>
+          <button type="button" class="photo-btn" onclick="document.getElementById('profilePicInput').click()">Upload Profile Picture *</button>
+          <input type="file" id="profilePicInput" accept="image/*" class="hidden-file-input" onchange="handleProfilePicSelect(event)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <div class="input-field">
+            <input type="text" class="name-input" id="setupName" placeholder="Your Name" required />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-auth btn-primary" style="margin-top:10px;">Complete Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP SCREEN -->
+  <div class="screen" id="screenApp">
+    <div class="app-header">
+      <div class="app-title">Touch of Dreams<small>MESSAGING &amp; SOCIAL</small></div>
+    </div>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search..." />
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- FEED TAB -->
+      <div class="tab-panel active" id="tab-feed">
+        <div class="composer-trigger" onclick="openCreatePost()">
+          <div class="composer-photo-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div class="composer-placeholder">আজকে কী নিয়ে ভাবছ?</div>
+        </div>
+        <div id="feedPostsList"></div>
+      </div>
+
+      <!-- CHATS TAB -->
+      <div class="tab-panel" id="tab-chats">
+        <div class="section-label-row">
+          <span class="section-label">Group Chats</span>
+          <button class="photo-btn" style="padding:4px 10px; font-size:11px;" onclick="openCreateGroupModal()">+ New Group</button>
+        </div>
+        <div id="groupsListContainer"></div>
+
+        <div class="section-label-row" style="margin-top:12px;">
+          <span class="section-label">Direct Messages</span>
+        </div>
+        <div id="chatsListContainer"></div>
+      </div>
+
+      <!-- SETTINGS / PROFILE TAB -->
+      <div class="tab-panel" id="tab-settings">
+        <div class="profile-card">
+          <div class="avatar" style="width:58px;height:58px;cursor:pointer;" id="settingsAvatar" onclick="document.getElementById('settingsPicInput').click()"></div>
+          <div>
+            <div class="profile-name" id="settingsUserName">User</div>
+            <div class="profile-user" id="settingsUserPhone">+880xxxxxxxxxx</div>
+          </div>
+        </div>
+
+        <!-- USER PROFILE MEDIA (আমার পোস্ট করা ছবি ও ভিডিও) -->
+        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">আমার ছবিসমূহ (My Photos)</div>
+        <div id="profilePhotosContainer" style="padding: 0 22px; display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;"></div>
+
+        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">আমার ভিডিওসমূহ (My Videos)</div>
+        <div id="profileVideosContainer" style="padding: 0 22px; display:flex; flex-direction:column; gap:10px;"></div>
+
+        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">Edit Profile Settings</div>
+        <div style="padding: 0 22px; display:flex; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <div class="input-field">
+              <input type="text" id="settingsNameInput" placeholder="Enter new name" />
+            </div>
+          </div>
+          <button type="button" class="photo-btn" onclick="document.getElementById('settingsPicInput').click()">Change Profile Picture</button>
+          <input type="file" id="settingsPicInput" accept="image/*" class="hidden-file-input" onchange="handleSettingsPicSelect(event)">
+          <button type="button" class="btn-auth btn-primary" onclick="saveSettings()" style="margin-top:4px;">Save Changes</button>
+        </div>
+
+        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">Account</div>
+        <div class="settings-tile danger" onclick="logout()">
+          <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
+          <span>Logout</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <div class="nav-item active" data-tab="feed" onclick="switchTab('feed')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Feed
+      </div>
+      <div class="nav-item" data-tab="chats" onclick="switchTab('chats')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-8.9 8.4 8.6 8.6 0 01-3.9-.9L3 20l1.05-4.6A8.4 8.4 0 013 11.5 8.5 8.5 0 0112 3a8.5 8.5 0 019 8.5z"/></svg>
+        Chats
+      </div>
+      <div class="nav-item" data-tab="settings" onclick="switchTab('settings')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+        Profile
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE POST SCREEN -->
+  <div class="screen" id="screenCreatePost">
+    <div class="create-post-header">
+      <div class="cp-icon-btn" onclick="switchScreen('screenApp')">✕</div>
+      <div class="title">Create Post</div>
+      <button class="cp-post-btn" onclick="submitPost()">Post</button>
+    </div>
+    <div class="cp-body">
+      <div class="cp-author-row">
+        <div class="avatar sm" id="cpAuthorAvatar"></div>
+        <div class="post-author-name" id="cpAuthorName">User</div>
+      </div>
+      <textarea class="caption-textarea" id="cpCaption" placeholder="আজকে কী নিয়ে ভাবছ?"></textarea>
+      <div class="image-preview-grid" id="cpImageGrid"></div>
+      
+      <div>
+        <button type="button" class="photo-btn" onclick="document.getElementById('postPhotoInput').click()">📱 Gallery (ছবি)</button>
+      </div>
+      <div style="margin-top:10px;">
+        <button type="button" class="photo-btn" style="width:100%;" onclick="document.getElementById('postVideoInput').click()">🎥 Video যোগ করো</button>
+        <div id="cpVideoPreviewWrap" style="display:none; margin-top:10px; position:relative;">
+          <video id="cpVideoPreview" controls style="width:100%; border-radius:12px;"></video>
+          <div class="image-remove-btn" onclick="removePostVideo()">✕</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHAT OVERLAY -->
+  <div class="chat-overlay" id="chatOverlay">
+    <div class="chat-header">
+      <div class="back-btn" onclick="closeChat()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="avatar sm" id="chatHeaderAvatar"></div>
+      <div class="chat-user-info">
+        <div class="chat-user-name" id="chatHeaderName">Chat</div>
+        <div class="chat-user-status" id="chatHeaderStatus">Online</div>
+      </div>
+      
+      <div class="call-btn" id="audioCallHeaderBtn" onclick="initiateCall('audio')" title="Audio Call">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      </div>
+      <div class="call-btn" id="videoCallHeaderBtn" onclick="initiateCall('video')" title="Video Call">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="call-btn" id="groupCallHeaderBtn" style="display:none;" onclick="initiateCall('group')" title="Group Call">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 1 0 7.75"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="add-member-btn" id="addMemberHeaderBtn" style="display:none;" onclick="openAddMemberModal()" title="Add Member">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-bar">
+      <button class="chat-mic-btn" id="micBtn" onclick="toggleVoiceRecording()" title="Record Voice">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <input type="text" id="chatInput" placeholder="মেসেজ লিখুন..." onkeypress="if(event.key==='Enter') sendChatMessage()" />
+      <button class="chat-send-btn" onclick="sendChatMessage()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- CALL OVERLAY -->
+  <div class="call-overlay" id="callOverlay">
+    <div class="call-header-info">
+      <div class="call-title" id="callTitleName">User Name</div>
+      <div class="call-status" id="callStatusText">Calling...</div>
+    </div>
+
+    <div class="call-avatar-wrap" id="singleCallAvatarWrap">
+      <div class="pulse-ring"></div>
+      <div class="call-avatar">
+        <img id="callAvatarImg" src="" />
+      </div>
+    </div>
+
+    <div class="video-call-wrap" id="videoCallWrap" style="display:none;">
+      <div class="video-placeholder" id="videoPlaceholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        <span>Video Active</span>
+      </div>
+      <video id="remoteVideo" class="remote-video" autoplay playsinline style="display:none;"></video>
+      <video id="localVideo" class="local-video" autoplay playsinline muted style="display:none;"></video>
+    </div>
+
+    <div class="call-members-grid" id="groupCallMembersGrid" style="display:none;"></div>
+
+    <div class="call-controls">
+      <div class="call-btn-action accept" id="acceptCallBtn" onclick="acceptVideoCall()" title="Accept Call" style="display:none;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      </div>
+
+      <div class="call-btn-action" id="muteMicBtn" onclick="toggleMuteMic()" title="Mute Microphone">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </div>
+
+      <div class="call-btn-action end" onclick="endCall()" title="End Call">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.68 13.31a16 16 0 003.41 3.41l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7 2 2 0 011.72 2v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.42 19.42 0 01-3.33-2.67m-2.67-3.34a19.79 19.79 0 01-3.07-8.63A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE GROUP MODAL -->
+  <div class="modal-overlay" id="createGroupModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-family:'Poppins',sans-serif; font-weight:700; font-size:16px;">Create Group</span>
+        <div class="cp-icon-btn" onclick="closeCreateGroupModal()">✕</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Group Name</label>
+        <div class="input-field">
+          <input type="text" id="groupNameInput" placeholder="Enter group name" />
+        </div>
+      </div>
+      <div class="form-label">Select Members</div>
+      <div id="createGroupUserList" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto;"></div>
+      <button type="button" class="btn-auth btn-primary" onclick="submitCreateGroup()">Create Group</button>
+    </div>
+  </div>
+
+  <!-- ADD MEMBER MODAL -->
+  <div class="modal-overlay" id="addMemberModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-family:'Poppins',sans-serif; font-weight:700; font-size:16px;">Add Members</span>
+        <div class="cp-icon-btn" onclick="closeAddMemberModal()">✕</div>
+      </div>
+      <div class="form-label">Select Users to Add</div>
+      <div id="addMemberUserList" style="display:flex; flex-direction:column; gap:8px; max-height:250px; overflow-y:auto;"></div>
+      <button type="button" class="btn-auth btn-primary" onclick="submitAddMembers()">Add Selected Users</button>
+    </div>
+  </div>
+
+</div>
+
+<input type="file" id="postPhotoInput" accept="image/*" multiple class="hidden-file-input" onchange="handlePhotoSelect(event)">
+<input type="file" id="postVideoInput" accept="video/*" class="hidden-file-input" onchange="handleVideoSelect(event)">
+
+<div class="toast" id="toastMsg"></div>
+
+<script>
+  const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%238b5cf6'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23ffffff'>👤</text></svg>";
+  const GROUP_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%236366f1'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23ffffff'>👥</text></svg>";
+
+  let currentUser = null;
+  let tempPhone = '';
+  let tempName = '';
+  let selectedProfilePic = null;
+  let tempSettingsPic = null;
+
+  let selectedPhotoUrls = [];
+  let selectedVideoUrl = null;
+  let currentChat = null;
+
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let isRecording = false;
+
+  let activeCallTimer = null;
+  let callSeconds = 0;
+  let isMuted = false;
+  let activeCallType = null;
+  let localStream = null;
+
+  function pauseOtherVideos(currentVideo) {
+    const allVideos = document.querySelectorAll('video');
+    allVideos.forEach(v => {
+      if (v !== currentVideo && !v.paused) {
+        v.pause();
+      }
+    });
+  }
+
+  document.addEventListener('play', function(e) {
+    if (e.target && e.target.tagName === 'VIDEO') pauseOtherVideos(e.target);
+  }, true);
+
+  document.addEventListener('seeking', function(e) {
+    if (e.target && e.target.tagName === 'VIDEO') pauseOtherVideos(e.target);
+  }, true);
+
+  document.addEventListener('seeked', function(e) {
+    if (e.target && e.target.tagName === 'VIDEO') {
+      const currentVideo = e.target;
+      pauseOtherVideos(currentVideo);
+      const playPromise = currentVideo.play();
+      if (playPromise !== undefined) playPromise.catch(() => {});
+    }
+  }, true);
+
+  let db;
+  function initDB() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("TouchOfDreamsDB", 1);
+      request.onupgradeneeded = function(e) {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("posts")) {
+          db.createObjectStore("posts", { keyPath: "id" });
+        }
+      };
+      request.onsuccess = function(e) {
+        db = e.target.result;
+        resolve(db);
+      };
+      request.onerror = function(e) { reject(e); };
+    });
+  }
+
+  function savePostDB(post) {
+    return new Promise((resolve) => {
+      if(!db) { resolve(); return; }
+      const tx = db.transaction("posts", "readwrite");
+      const store = tx.objectStore("posts");
+      store.put(post);
+      tx.oncomplete = () => resolve();
+    });
+  }
+
+  function getAllPostsDB() {
+    return new Promise((resolve) => {
+      if(!db) { resolve([]); return; }
+      const tx = db.transaction("posts", "readonly");
+      const store = tx.objectStore("posts");
+      const req = store.getAll();
+      req.onsuccess = () => {
+        const posts = req.result || [];
+        posts.sort((a, b) => b.timestamp - a.timestamp);
+        resolve(posts);
+      };
+      req.onerror = () => resolve([]);
+    });
+  }
+
+  function safeGetArray(key) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      return Array.isArray(data) ? data : [];
+    } catch (e) { return []; }
+  }
+
+  function safeGetObj(key) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      return (data && typeof data === 'object' && !Array.isArray(data)) ? data : {};
+    } catch (e) { return {}; }
+  }
+
+  function compressImage(file, maxWidth, maxHeight, quality, callback) {
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        callback(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = function() { showToast('ছবি লোড করতে সমস্যা হয়েছে!'); };
+      img.src = e.target.result;
+    };
+    reader.onerror = function() { showToast('ফাইল পড়তে সমস্যা হয়েছে!'); };
+    reader.readAsDataURL(file);
+  }
+
+  window.onload = async function() {
+    await initDB();
+
+    const savedUser = localStorage.getItem('tod_current_user');
+    if(savedUser) {
+      try {
+        currentUser = JSON.parse(savedUser);
+        if(!currentUser || !currentUser.name) {
+          currentUser = { phone: '01700000000', name: 'User', avatar: DEFAULT_AVATAR };
+        }
+        
+        let users = safeGetArray('tod_users');
+        let existing = users.find(u => u.phone === currentUser.phone);
+        if(existing) {
+          if(existing.name) currentUser.name = existing.name;
+          if(existing.avatar) currentUser.avatar = existing.avatar;
+        } else {
+          users.push(currentUser);
+          localStorage.setItem('tod_users', JSON.stringify(users));
+        }
+
+        updateUserUI();
+        renderChatsList();
+        await renderFeedPosts();
+        await renderProfileMedia();
+        switchScreen('screenApp');
+      } catch(e) {
+        localStorage.removeItem('tod_current_user');
+      }
+    }
+  };
+
+  function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+  }
+
+  function switchTab(tabName) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    
+    document.querySelector(`.nav-item[data-tab="${tabName}"]`).classList.add('active');
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+
+    if(tabName === 'chats') {
+      renderChatsList();
+    } else if(tabName === 'settings') {
+      renderProfileMedia();
+    }
+  }
+
+  /* ---- AUTH & PROFILE ---- */
+  function handleLoginSubmit(e) {
+    e.preventDefault();
+    tempPhone = document.getElementById('loginPhone').value.trim();
+    const inputName = document.getElementById('loginName').value.trim();
+
+    if(!tempPhone) { showToast('ফোন নম্বর দিন'); return; }
+
+    let users = safeGetArray('tod_users');
+    let existingUser = users.find(u => u.phone === tempPhone);
+
+    if(existingUser) {
+      tempName = inputName || existingUser.name || 'User';
+      if(existingUser.avatar && existingUser.avatar !== DEFAULT_AVATAR) {
+        selectedProfilePic = existingUser.avatar;
+        const img = document.getElementById('setupAvatarImg');
+        if(img) { img.src = selectedProfilePic; img.style.display = 'block'; }
+        const ph = document.getElementById('avatarPlaceholder');
+        if(ph) ph.style.display = 'none';
+      } else {
+        selectedProfilePic = null;
+        const img = document.getElementById('setupAvatarImg');
+        if(img) img.style.display = 'none';
+        const ph = document.getElementById('avatarPlaceholder');
+        if(ph) ph.style.display = 'block';
+      }
+    } else {
+      tempName = inputName || 'User';
+      selectedProfilePic = null;
+      const img = document.getElementById('setupAvatarImg');
+      if(img) img.style.display = 'none';
+      const ph = document.getElementById('avatarPlaceholder');
+      if(ph) ph.style.display = 'block';
+    }
+
+    document.getElementById('setupName').value = tempName;
+    switchScreen('screenProfileSetup');
+  }
+
+  function handleRegisterSubmit(e) {
+    e.preventDefault();
+    tempPhone = document.getElementById('regPhone').value.trim();
+    const inputName = document.getElementById('regName').value.trim();
+
+    if(!tempPhone) { showToast('ফোন নম্বর দিন'); return; }
+
+    let users = safeGetArray('tod_users');
+    let existingUser = users.find(u => u.phone === tempPhone);
+
+    if(existingUser) {
+      tempName = inputName || existingUser.name || 'User';
+      if(existingUser.avatar && existingUser.avatar !== DEFAULT_AVATAR) {
+        selectedProfilePic = existingUser.avatar;
+        const img = document.getElementById('setupAvatarImg');
+        if(img) { img.src = selectedProfilePic; img.style.display = 'block'; }
+        const ph = document.getElementById('avatarPlaceholder');
+        if(ph) ph.style.display = 'none';
+      } else {
+        selectedProfilePic = null;
+        const img = document.getElementById('setupAvatarImg');
+        if(img) img.style.display = 'none';
+        const ph = document.getElementById('avatarPlaceholder');
+        if(ph) ph.style.display = 'block';
+      }
+    } else {
+      tempName = inputName || 'User';
+      selectedProfilePic = null;
+      const img = document.getElementById('setupAvatarImg');
+      if(img) img.style.display = 'none';
+      const ph = document.getElementById('avatarPlaceholder');
+      if(ph) ph.style.display = 'block';
+    }
+
+    document.getElementById('setupName').value = tempName;
+    switchScreen('screenProfileSetup');
+  }
+
+  function handleProfilePicSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if(file) {
+      compressImage(file, 300, 300, 0.6, function(compressedBase64) {
+        selectedProfilePic = compressedBase64;
+        const img = document.getElementById('setupAvatarImg');
+        if(img) { img.src = selectedProfilePic; img.style.display = 'block'; }
+        const ph = document.getElementById('avatarPlaceholder');
+        if(ph) ph.style.display = 'none';
+      });
+    }
+    e.target.value = '';
+  }
+
+  function handleProfileComplete(e) {
+    e.preventDefault();
+    if(!selectedProfilePic) { showToast('ছবি নির্বাচন/আপলোড করা বাধ্যতামূলক!'); return; }
+
+    const enteredName = document.getElementById('setupName').value.trim();
+    let users = safeGetArray('tod_users');
+    let existingUser = users.find(u => u.phone === tempPhone);
+    const finalName = enteredName || (existingUser ? existingUser.name : '') || tempName || 'User';
+
+    currentUser = { phone: tempPhone || '01700000000', name: finalName, avatar: selectedProfilePic };
+
+    try {
+      localStorage.setItem('tod_current_user', JSON.stringify(currentUser));
+      const idx = users.findIndex(u => u.phone === currentUser.phone);
+      if(idx >= 0) users[idx] = currentUser;
+      else users.push(currentUser);
+      localStorage.setItem('tod_users', JSON.stringify(users));
+    } catch(err) { console.error(err); }
+
+    updateUserUI();
+    renderChatsList();
+    renderFeedPosts();
+    renderProfileMedia();
+    switchScreen('screenApp');
+    showToast('প্রোফাইল তৈরি হয়েছে!');
+  }
+
+  function handleSettingsPicSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if(file) {
+      compressImage(file, 300, 300, 0.6, function(compressedBase64) {
+        tempSettingsPic = compressedBase64;
+        document.getElementById('settingsAvatar').innerHTML = `<img src="${tempSettingsPic}" style="width:100%;height:100%;object-fit:cover;" />`;
+      });
+    }
+    e.target.value = '';
+  }
+
+  function saveSettings() {
+    if(!currentUser) currentUser = { phone: '01700000000', name: 'User', avatar: DEFAULT_AVATAR };
+    const newName = document.getElementById('settingsNameInput').value.trim();
+
+    if(newName) currentUser.name = newName;
+    if(tempSettingsPic) currentUser.avatar = tempSettingsPic;
+
+    try {
+      localStorage.setItem('tod_current_user', JSON.stringify(currentUser));
+      let users = safeGetArray('tod_users');
+      const index = users.findIndex(u => u.phone === currentUser.phone);
+      if(index >= 0) users[index] = currentUser;
+      else users.push(currentUser);
+      localStorage.setItem('tod_users', JSON.stringify(users));
+      showToast('Settings আপডেট করা হয়েছে!');
+    } catch(e) { showToast('সেভ করতে সমস্যা হয়েছে!'); }
+
+    tempSettingsPic = null;
+    updateUserUI();
+    renderChatsList();
+    renderFeedPosts();
+    renderProfileMedia();
+  }
+
+  function updateUserUI() {
+    const name = (currentUser && currentUser.name) ? currentUser.name : 'User';
+    const avatar = (currentUser && currentUser.avatar) ? currentUser.avatar : DEFAULT_AVATAR;
+    const phone = currentUser ? currentUser.phone : '01700000000';
+
+    document.getElementById('settingsUserName').innerText = name;
+    document.getElementById('settingsUserPhone').innerText = '+880' + phone;
+    document.getElementById('settingsAvatar').innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;" />`;
+    document.getElementById('settingsNameInput').value = name;
+
+    document.getElementById('cpAuthorName').innerText = name;
+    document.getElementById('cpAuthorAvatar').innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;" />`;
+  }
+
+  function logout() {
+    localStorage.removeItem('tod_current_user');
+    currentUser = null;
+    selectedProfilePic = null;
+    switchScreen('screenLogin');
+  }
+
+  /* ---- USER PROFILE MEDIA ENGINE ---- */
+  async function renderProfileMedia() {
+    const photosContainer = document.getElementById('profilePhotosContainer');
+    const videosContainer = document.getElementById('profileVideosContainer');
+    if(!photosContainer || !videosContainer || !currentUser) return;
+
+    photosContainer.innerHTML = '';
+    videosContainer.innerHTML = '';
+
+    const posts = await getAllPostsDB();
+    const myPosts = posts.filter(p => p.authorPhone === currentUser.phone);
+
+    let myPhotos = [];
+    let myVideos = [];
+
+    myPosts.forEach(p => {
+      if(Array.isArray(p.photos) && p.photos.length > 0) {
+        p.photos.forEach(photo => myPhotos.push(photo));
+      }
+      if(p.video) {
+        myVideos.push(p.video);
+      }
+    });
+
+    if(myPhotos.length > 0) {
+      myPhotos.forEach(photoUrl => {
+        const photoDiv = document.createElement('div');
+        photoDiv.style.cssText = "aspect-ratio:1; border-radius:10px; overflow:hidden; background:var(--bg-elev);";
+        photoDiv.innerHTML = `<img src="${photoUrl}" style="width:100%; height:100%; object-fit:cover;" />`;
+        photosContainer.appendChild(photoDiv);
+      });
+    } else {
+      photosContainer.innerHTML = `<div style="grid-column: 1 / -1; color:var(--text-dim); font-size:12px;">কোনো ছবি পোস্ট করা হয়নি</div>`;
+    }
+
+    if(myVideos.length > 0) {
+      myVideos.forEach(videoUrl => {
+        const videoDiv = document.createElement('div');
+        videoDiv.style.cssText = "border-radius:12px; overflow:hidden; background:#000;";
+        videoDiv.innerHTML = `<video src="${videoUrl}" controls style="width:100%; max-height:220px; display:block;"></video>`;
+        videosContainer.appendChild(videoDiv);
+      });
+    } else {
+      videosContainer.innerHTML = `<div style="color:var(--text-dim); font-size:12px;">কোনো ভিডিও পোস্ট করা হয়নি</div>`;
+    }
+  }
+
+  /* ---- POST CREATION & FEED ---- */
+  function openCreatePost() {
+    selectedPhotoUrls = [];
+    selectedVideoUrl = null;
+    document.getElementById('cpCaption').value = '';
+    document.getElementById('cpImageGrid').innerHTML = '';
+    document.getElementById('cpVideoPreviewWrap').style.display = 'none';
+    switchScreen('screenCreatePost');
+  }
+
+  function handlePhotoSelect(e) {
+    const files = Array.from(e.target.files || []);
+    files.forEach(file => {
+      compressImage(file, 800, 800, 0.7, function(base64) {
+        selectedPhotoUrls.push(base64);
+        renderCreatePostPreviews();
+      });
+    });
+    e.target.value = '';
+  }
+
+  function renderCreatePostPreviews() {
+    const grid = document.getElementById('cpImageGrid');
+    grid.innerHTML = '';
+    selectedPhotoUrls.forEach((url, idx) => {
+      const item = document.createElement('div');
+      item.className = 'image-preview-item';
+      item.innerHTML = `
+        <img src="${url}" />
+        <div class="image-remove-btn" onclick="removePostPhoto(${idx})">✕</div>
+      `;
+      grid.appendChild(item);
+    });
+  }
+
+  function removePostPhoto(idx) {
+    selectedPhotoUrls.splice(idx, 1);
+    renderCreatePostPreviews();
+  }
+
+  function handleVideoSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if(file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        selectedVideoUrl = evt.target.result;
+        const vid = document.getElementById('cpVideoPreview');
+        vid.src = selectedVideoUrl;
+        document.getElementById('cpVideoPreviewWrap').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+    e.target.value = '';
+  }
+
+  function removePostVideo() {
+    selectedVideoUrl = null;
+    document.getElementById('cpVideoPreview').src = '';
+    document.getElementById('cpVideoPreviewWrap').style.display = 'none';
+  }
+
+  async function submitPost() {
+    const caption = document.getElementById('cpCaption').value.trim();
+    if(!caption && selectedPhotoUrls.length === 0 && !selectedVideoUrl) {
+      showToast('পোস্টে কিছু লেখা, ছবি বা ভিডিও যোগ করুন');
+      return;
+    }
+
+    const post = {
+      id: 'post_' + Date.now(),
+      authorPhone: currentUser.phone,
+      authorName: currentUser.name,
+      authorAvatar: currentUser.avatar,
+      caption: caption,
+      photos: [...selectedPhotoUrls],
+      video: selectedVideoUrl,
+      timestamp: Date.now()
+    };
+
+    await savePostDB(post);
+    showToast('পোস্ট প্রকাশিত হয়েছে!');
+    switchScreen('screenApp');
+    await renderFeedPosts();
+    await renderProfileMedia();
+  }
+
+  async function renderFeedPosts() {
+    const container = document.getElementById('feedPostsList');
+    if(!container) return;
+    container.innerHTML = '';
+
+    const posts = await getAllPostsDB();
+
+    if(posts.length === 0) {
+      container.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-dim); font-size:13px;">কোনো পোস্ট নেই</div>`;
+      return;
+    }
+
+    posts.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+
+      let imgsHtml = '';
+      if(p.photos && p.photos.length > 0) {
+        imgsHtml = `<div class="post-images count-1">`;
+        p.photos.forEach(img => {
+          imgsHtml += `<img src="${img}" class="post-img" />`;
+        });
+        imgsHtml += `</div>`;
+      }
+
+      let vidHtml = '';
+      if(p.video) {
+        vidHtml = `<video src="${p.video}" controls class="post-video"></video>`;
+      }
+
+      card.innerHTML = `
+        <div class="post-header">
+          <div class="avatar sm"><img src="${p.authorAvatar || DEFAULT_AVATAR}" /></div>
+          <div>
+            <div class="post-author-name">${escapeHtml(p.authorName || 'User')}</div>
+            <div class="post-meta">${new Date(p.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+          </div>
+        </div>
+        ${p.caption ? `<div class="post-caption">${escapeHtml(p.caption)}</div>` : ''}
+        ${imgsHtml}
+        ${vidHtml}
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  /* ---- CHATS & GROUPS LIST ---- */
+  function renderChatsList() {
+    const usersContainer = document.getElementById('chatsListContainer');
+    const groupsContainer = document.getElementById('groupsListContainer');
+    if(!usersContainer || !groupsContainer) return;
+
+    usersContainer.innerHTML = '';
+    groupsContainer.innerHTML = '';
+
+    const users = safeGetArray('tod_users');
+    const groups = safeGetArray('tod_groups');
+
+    if(currentUser) {
+      const myGroups = groups.filter(g => Array.isArray(g.members) && g.members.includes(currentUser.phone));
+      myGroups.forEach(g => {
+        const item = document.createElement('div');
+        item.className = 'row';
+        item.onclick = () => openGroupChat(g);
+        item.innerHTML = `
+          <div class="avatar sm"><img src="${GROUP_AVATAR}" /></div>
+          <div class="row-body">
+            <div class="row-top"><span class="row-name">${g.name || 'Group'}</span><span class="row-time">${g.members.length} members</span></div>
+            <div class="row-sub"><span class="row-msg">Group Chat</span></div>
+          </div>
+        `;
+        groupsContainer.appendChild(item);
+      });
+    }
+
+    if(groupsContainer.innerHTML === '') {
+      groupsContainer.innerHTML = `<div style="padding:10px 22px; color:var(--text-dim); font-size:12px;">কোনো গ্রুপ নেই</div>`;
+    }
+
+    users.forEach(u => {
+      if(!currentUser || u.phone !== currentUser.phone) {
+        const item = document.createElement('div');
+        item.className = 'row';
+        item.onclick = () => openDirectChat(u);
+        item.innerHTML = `
+          <div class="avatar sm"><img src="${u.avatar || DEFAULT_AVATAR}" /></div>
+          <div class="row-body">
+            <div class="row-top"><span class="row-name">${u.name || 'User'}</span><span class="row-time">Online</span></div>
+            <div class="row-sub"><span class="row-msg">Click to message</span></div>
+          </div>
+        `;
+        usersContainer.appendChild(item);
+      }
+    });
+
+    if(usersContainer.innerHTML === '') {
+      usersContainer.innerHTML = `<div style="padding:10px 22px; color:var(--text-dim); font-size:12px;">কোনো ব্যবহারকারী নেই</div>`;
+    }
+  }
+
+  /* ---- MESSAGING ENGINE ---- */
+  function openDirectChat(user) {
+    currentChat = { type: 'direct', targetId: user.phone, name: user.name || 'User', avatar: user.avatar || DEFAULT_AVATAR };
+    document.getElementById('chatHeaderName').innerText = user.name || 'User';
+    document.getElementById('chatHeaderAvatar').innerHTML = `<img src="${user.avatar || DEFAULT_AVATAR}" />`;
+    document.getElementById('chatHeaderStatus').innerText = 'Online';
+    
+    document.getElementById('audioCallHeaderBtn').style.display = 'flex';
+    document.getElementById('videoCallHeaderBtn').style.display = 'flex';
+    document.getElementById('groupCallHeaderBtn').style.display = 'none';
+    document.getElementById('addMemberHeaderBtn').style.display = 'none';
+
+    renderMessages();
+    document.getElementById('chatOverlay').classList.add('show');
+  }
+
+  function openGroupChat(group) {
+    currentChat = { type: 'group', targetId: group.id, name: group.name || 'Group', avatar: GROUP_AVATAR, groupObj: group };
+    document.getElementById('chatHeaderName').innerText = group.name || 'Group';
+    document.getElementById('chatHeaderAvatar').innerHTML = `<img src="${GROUP_AVATAR}" />`;
+    document.getElementById('chatHeaderStatus').innerText = `${group.members.length} members`;
+
+    document.getElementById('audioCallHeaderBtn').style.display = 'none';
+    document.getElementById('videoCallHeaderBtn').style.display = 'none';
+    document.getElementById('groupCallHeaderBtn').style.display = 'flex';
+    document.getElementById('addMemberHeaderBtn').style.display = 'flex';
+
+    renderMessages();
+    document.getElementById('chatOverlay').classList.add('show');
+  }
+
+  function closeChat() {
+    if (isRecording && mediaRecorder) {
+      mediaRecorder.stop();
+      isRecording = false;
+      document.getElementById('micBtn').classList.remove('recording');
+      document.getElementById('chatInput').placeholder = "মেসেজ লিখুন...";
+    }
+    document.getElementById('chatOverlay').classList.remove('show');
+    currentChat = null;
+  }
+
+  function renderMessages() {
+    const container = document.getElementById('chatMessages');
+    container.innerHTML = '';
+    if(!currentChat || !currentUser) return;
+
+    if(currentChat.type === 'direct') {
+      let dms = safeGetObj('tod_dms');
+      const chatKey = [currentUser.phone, currentChat.targetId].sort().join('_');
+      const msgs = dms[chatKey] || [];
+
+      msgs.forEach(m => {
+        const bubble = document.createElement('div');
+        bubble.className = `msg-bubble ${m.sender === currentUser.phone ? 'sent' : 'received'}`;
+        if (m.type === 'audio') {
+          bubble.innerHTML = `<audio controls class="chat-audio-player" src="${m.audioUrl}"></audio>`;
+        } else {
+          bubble.innerText = m.text;
+        }
+        container.appendChild(bubble);
+      });
+    } else if(currentChat.type === 'group') {
+      let groupMsgs = safeGetObj('tod_group_msgs');
+      const msgs = groupMsgs[currentChat.targetId] || [];
+
+      msgs.forEach(m => {
+        const isSent = m.sender === currentUser.phone;
+        const bubble = document.createElement('div');
+        bubble.className = `msg-bubble ${isSent ? 'sent' : 'received'}`;
+        
+        let senderNameHtml = '';
+        if(!isSent && m.senderName) {
+          senderNameHtml = `<div style="font-size:10.5px; font-weight:700; color:var(--purple); margin-bottom:2px;">${m.senderName}</div>`;
+        }
+        
+        let contentHtml = '';
+        if (m.type === 'audio') {
+          contentHtml = `<audio controls class="chat-audio-player" src="${m.audioUrl}"></audio>`;
+        } else {
+          contentHtml = `<div>${escapeHtml(m.text || '')}</div>`;
+        }
+
+        bubble.innerHTML = `${senderNameHtml}${contentHtml}`;
+        container.appendChild(bubble);
+      });
+    }
+
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if(!text || !currentChat || !currentUser) return;
+
+    if(currentChat.type === 'direct') {
+      let dms = safeGetObj('tod_dms');
+      const chatKey = [currentUser.phone, currentChat.targetId].sort().join('_');
+      if(!dms[chatKey]) dms[chatKey] = [];
+
+      dms[chatKey].push({ sender: currentUser.phone, text: text, time: Date.now() });
+      localStorage.setItem('tod_dms', JSON.stringify(dms));
+    } else if(currentChat.type === 'group') {
+      let groupMsgs = safeGetObj('tod_group_msgs');
+      if(!groupMsgs[currentChat.targetId]) groupMsgs[currentChat.targetId] = [];
+
+      groupMsgs[currentChat.targetId].push({ sender: currentUser.phone, senderName: currentUser.name || 'User', text: text, time: Date.now() });
+      localStorage.setItem('tod_group_msgs', JSON.stringify(groupMsgs));
+    }
+
+    input.value = '';
+    renderMessages();
+  }
+
+  async function toggleVoiceRecording() {
+    if(!currentChat || !currentUser) return;
+    const micBtn = document.getElementById('micBtn');
+    const inputField = document.getElementById('chatInput');
+
+    if (!isRecording) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          const reader = new FileReader();
+          reader.onloadend = () => { sendVoiceMessage(reader.result); };
+          reader.readAsDataURL(audioBlob);
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+        micBtn.classList.add('recording');
+        inputField.placeholder = "রেকর্ড হচ্ছে...";
+        showToast('ভয়েস রেকর্ড শুরু হয়েছে');
+      } catch (err) {
+        showToast('মাইক্রোফোন অ্যাক্সেস পাওয়ার অনুমতি নেই');
+      }
+    } else {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      isRecording = false;
+      micBtn.classList.remove('recording');
+      inputField.placeholder = "মেসেজ লিখুন...";
+    }
+  }
+
+  function sendVoiceMessage(base64Audio) {
+    if(!currentChat || !currentUser) return;
+
+    if(currentChat.type === 'direct') {
+      let dms = safeGetObj('tod_dms');
+      const chatKey = [currentUser.phone, currentChat.targetId].sort().join('_');
+      if(!dms[chatKey]) dms[chatKey] = [];
+
+      dms[chatKey].push({ sender: currentUser.phone, type: 'audio', audioUrl: base64Audio, time: Date.now() });
+      localStorage.setItem('tod_dms', JSON.stringify(dms));
+    } else if(currentChat.type === 'group') {
+      let groupMsgs = safeGetObj('tod_group_msgs');
+      if(!groupMsgs[currentChat.targetId]) groupMsgs[currentChat.targetId] = [];
+
+      groupMsgs[currentChat.targetId].push({ sender: currentUser.phone, senderName: currentUser.name || 'User', type: 'audio', audioUrl: base64Audio, time: Date.now() });
+      localStorage.setItem('tod_group_msgs', JSON.stringify(groupMsgs));
+    }
+
+    renderMessages();
+    showToast('ভয়েস মেসেজ পাঠানো হয়েছে!');
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.innerText = text;
+    return div.innerHTML;
+  }
+
+  /* ---- CALL SYSTEM ---- */
+  function initiateCall(type) {
+    if(!currentChat) return;
+
+    activeCallType = type;
+    isMuted = false;
+    document.getElementById('muteMicBtn').classList.remove('active');
+    document.getElementById('callOverlay').classList.add('show');
+    document.getElementById('callTitleName').innerText = currentChat.name;
+
+    document.getElementById('singleCallAvatarWrap').style.display = 'none';
+    document.getElementById('videoCallWrap').style.display = 'none';
+    document.getElementById('groupCallMembersGrid').style.display = 'none';
+    document.getElementById('acceptCallBtn').style.display = 'none';
+
+    if(type === 'audio') {
+      document.getElementById('singleCallAvatarWrap').style.display = 'flex';
+      document.getElementById('callAvatarImg').src = currentChat.avatar;
+      document.getElementById('callStatusText').innerText = 'Calling Audio...';
+
+      setTimeout(() => {
+        if(document.getElementById('callOverlay').classList.contains('show')) {
+          document.getElementById('callStatusText').innerText = 'Connected 00:00';
+          startCallTimer();
+        }
+      }, 2000);
+
+    } else if(type === 'video') {
+      document.getElementById('singleCallAvatarWrap').style.display = 'flex';
+      document.getElementById('callAvatarImg').src = currentChat.avatar;
+      document.getElementById('callStatusText').innerText = 'Incoming Video Call...';
+      document.getElementById('acceptCallBtn').style.display = 'flex';
+
+    } else if(type === 'group') {
+      const grid = document.getElementById('groupCallMembersGrid');
+      grid.style.display = 'grid';
+      grid.innerHTML = '';
+
+      document.getElementById('callStatusText').innerText = 'Group Call Active';
+
+      let users = safeGetArray('tod_users');
+      let groups = safeGetArray('tod_groups');
+      let grp = groups.find(g => g.id === currentChat.targetId);
+
+      if(grp && Array.isArray(grp.members)) {
+        grp.members.forEach(mPhone => {
+          let u = users.find(usr => usr.phone === mPhone) || { name: 'Member', avatar: DEFAULT_AVATAR };
+          let card = document.createElement('div');
+          card.className = 'call-member-card';
+          card.innerHTML = `
+            <div class="call-member-avatar"><img src="${u.avatar || DEFAULT_AVATAR}" /></div>
+            <div class="call-member-name">${u.name}</div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+      startCallTimer();
+    }
+  }
+
+  async function acceptVideoCall() {
+    document.getElementById('acceptCallBtn').style.display = 'none';
+    document.getElementById('singleCallAvatarWrap').style.display = 'none';
+    document.getElementById('videoCallWrap').style.display = 'flex';
+    document.getElementById('callStatusText').innerText = 'Video Call Connected 00:00';
+    startCallTimer();
+
+    try {
+      if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        const localVideo = document.getElementById('localVideo');
+        if(localVideo) {
+          localVideo.srcObject = localStream;
+          localVideo.style.display = 'block';
+        }
+      }
+    } catch(e) {}
+  }
+
+  function startCallTimer() {
+    clearInterval(activeCallTimer);
+    callSeconds = 0;
+    activeCallTimer = setInterval(() => {
+      callSeconds++;
+      let mins = Math.floor(callSeconds / 60).toString().padStart(2, '0');
+      let secs = (callSeconds % 60).toString().padStart(2, '0');
+      
+      let prefix = 'Connected';
+      if(activeCallType === 'group') prefix = 'Group Call';
+      if(activeCallType === 'video') prefix = 'Video Call Connected';
+      
+      document.getElementById('callStatusText').innerText = `${prefix} ${mins}:${secs}`;
+    }, 1000);
+  }
+
+  function toggleMuteMic() {
+    isMuted = !isMuted;
+    const btn = document.getElementById('muteMicBtn');
+    if(isMuted) {
+      btn.classList.add('active');
+      showToast('Microphone Muted');
+    } else {
+      btn.classList.remove('active');
+      showToast('Microphone Unmuted');
+    }
+  }
+
+  function endCall() {
+    clearInterval(activeCallTimer);
+    if(localStream) {
+      localStream.getTracks().forEach(track => track.stop());
+      localStream = null;
+    }
+    document.getElementById('localVideo').style.display = 'none';
+    document.getElementById('callOverlay').classList.remove('show');
+    showToast('Call Ended');
+  }
+
+  /* ---- GROUPS MODALS ---- */
+  function openCreateGroupModal() {
+    if(!currentUser) return;
+    const container = document.getElementById('createGroupUserList');
+    container.innerHTML = '';
+    const users = safeGetArray('tod_users');
+
+    users.forEach(u => {
+      if(u.phone !== currentUser.phone) {
+        const label = document.createElement('label');
+        label.style.cssText = "display:flex; align-items:center; gap:10px; padding:8px; background:var(--bg-elev-2); border-radius:10px; cursor:pointer;";
+        label.innerHTML = `
+          <input type="checkbox" value="${u.phone}" class="group-user-select" />
+          <img src="${u.avatar || DEFAULT_AVATAR}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;" />
+          <span style="font-size:13px; font-weight:600;">${u.name || 'User'}</span>
+        `;
+        container.appendChild(label);
+      }
+    });
+
+    if(container.innerHTML === '') {
+      container.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">কোনো ব্যবহারকারী পাওয়া যায়নি</div>';
+    }
+
+    document.getElementById('createGroupModal').classList.add('show');
+  }
+
+  function closeCreateGroupModal() {
+    document.getElementById('createGroupModal').classList.remove('show');
+    document.getElementById('groupNameInput').value = '';
+  }
+
+  function submitCreateGroup() {
+    const groupName = document.getElementById('groupNameInput').value.trim();
+    if(!groupName) { showToast('গ্রুপের একটি নাম দিন'); return; }
+
+    const checkedInputs = document.querySelectorAll('.group-user-select:checked');
+    const selectedPhones = Array.from(checkedInputs).map(i => i.value);
+    selectedPhones.push(currentUser.phone);
+
+    let groups = safeGetArray('tod_groups');
+    const newGroup = {
+      id: 'grp_' + Date.now(),
+      name: groupName,
+      members: selectedPhones,
+      createdBy: currentUser.phone
+    };
+
+    groups.push(newGroup);
+    localStorage.setItem('tod_groups', JSON.stringify(groups));
+
+    closeCreateGroupModal();
+    renderChatsList();
+    showToast('নতুন গ্রুপ তৈরি হয়েছে!');
+  }
+
+  function openAddMemberModal() {
+    if(!currentChat || currentChat.type !== 'group') return;
+    const container = document.getElementById('addMemberUserList');
+    container.innerHTML = '';
+
+    const groups = safeGetArray('tod_groups');
+    const group = groups.find(g => g.id === currentChat.targetId);
+    if(!group) return;
+
+    const users = safeGetArray('tod_users');
+    const nonMembers = users.filter(u => !group.members.includes(u.phone));
+
+    nonMembers.forEach(u => {
+      const label = document.createElement('label');
+      label.style.cssText = "display:flex; align-items:center; gap:10px; padding:8px; background:var(--bg-elev-2); border-radius:10px; cursor:pointer;";
+      label.innerHTML = `
+        <input type="checkbox" value="${u.phone}" class="add-user-select" />
+        <img src="${u.avatar || DEFAULT_AVATAR}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;" />
+        <span style="font-size:13px; font-weight:600;">${u.name || 'User'}</span>
+      `;
+      container.appendChild(label);
+    });
+
+    if(container.innerHTML === '') {
+      container.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">কোনো নতুন সদস্য পাওয়া যায়নি</div>';
+    }
+
+    document.getElementById('addMemberModal').classList.add('show');
+  }
+
+  function closeAddMemberModal() {
+    document.getElementById('addMemberModal').classList.remove('show');
+  }
+
+  function submitAddMembers() {
+    if(!currentChat || currentChat.type !== 'group') return;
+    const checkedInputs = document.querySelectorAll('.add-user-select:checked');
+    const selectedPhones = Array.from(checkedInputs).map(i => i.value);
+
+    if(selectedPhones.length === 0) {
+      showToast('অন্তত একজন সদস্য সিলেক্ট করুন');
+      return;
+    }
+
+    let groups = safeGetArray('tod_groups');
+    const groupIdx = groups.findIndex(g => g.id === currentChat.targetId);
+    if(groupIdx >= 0) {
+      selectedPhones.forEach(p => {
+        if(!groups[groupIdx].members.includes(p)) {
+          groups[groupIdx].members.push(p);
+        }
+      });
+      localStorage.setItem('tod_groups', JSON.stringify(groups));
+      currentChat.groupObj = groups[groupIdx];
+      document.getElementById('chatHeaderStatus').innerText = `${groups[groupIdx].members.length} members`;
+      showToast('নতুন সদস্য যোগ করা হয়েছে!');
+    }
+    closeAddMemberModal();
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toastMsg');
+    if(!toast) return;
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 2500);
+  }
+</script>
+</body>
+</html>
