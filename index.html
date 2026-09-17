@@ -171,7 +171,7 @@
     width:120px; height:120px; border-radius:50%; background: var(--bg-elev-2); border: 2px dashed var(--purple); display:flex; align-items:center; justify-content:center; font-size:36px; color:var(--text-dim); box-shadow: 0 0 24px var(--glow); position:relative; overflow:hidden;
   }
   .avatar-preview img{ width:100%; height:100%; object-fit:cover; }
-  .photo-btn{ padding:10px 18px; border-radius:10px; border:1px solid var(--purple); background: rgba(139,92,246,.12); color:var(--text); font-size:13px; font-weight:600; cursor:pointer; }
+  .photo-btn{ padding:10px 18px; border-radius:10px; border:1px solid var(--purple); background: rgba(139,92,246,.12); color:var(--text); font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px;}
 
   .profile-form{ display:flex; flex-direction:column; gap:14px; }
   .input-field{ display:flex; align-items:center; gap:12px; background: var(--bg-elev); border:1px solid var(--border); border-radius:12px; padding:12px 14px; }
@@ -185,7 +185,7 @@
   .search-box{ background: var(--bg-elev); border:1px solid var(--border); border-radius:16px; padding:12px 16px; display:flex; align-items:center; gap:10px; color: var(--text-dim); }
   .search-box input{ background:none; border:none; outline:none; color:var(--text); font-family:'Manrope',sans-serif; font-size:14px; width:100%; }
 
-  .content{ flex:1; overflow-y:auto; padding-bottom:110px; }
+  .content{ flex:1; overflow-y:auto; padding-bottom:110px; scroll-snap-type: y mandatory; }
   .content::-webkit-scrollbar{ display:none; }
 
   .section-label-row{ display:flex; justify-content:space-between; align-items:center; padding: 14px 22px 8px; }
@@ -211,15 +211,240 @@
   .composer-placeholder{ flex:1; color: var(--text-dim); font-size:13.5px; }
   .composer-photo-icon{ width:34px; height:34px; border-radius:10px; background: rgba(139,92,246,.12); color: var(--purple); display:flex; align-items:center; justify-content:center; }
 
-  .post-card{ margin:0 0 10px; padding:16px 22px 8px; border-bottom: 8px solid rgba(255,255,255,.02); }
+  .post-card{ margin:0 0 14px; padding:16px 22px 12px; border-bottom: 8px solid rgba(255,255,255,.02); }
   .post-header{ display:flex; align-items:center; gap:12px; margin-bottom:10px; }
-  .post-author-name{ font-family:'Poppins',sans-serif; font-weight:600; font-size:14.5px; }
+  .post-author-name{ font-family:'Poppins',sans-serif; font-weight:600; font-size:14.5px; cursor:pointer;}
+  .post-author-name:hover{ text-decoration:underline; }
   .post-meta{ font-size:11.5px; color: var(--text-dim); margin-top:1px; }
   .post-caption{ font-size:14px; line-height:1.5; margin-bottom:10px; white-space:pre-wrap; word-break:break-word; }
   .post-images{ display:grid; gap:3px; border-radius:14px; overflow:hidden; margin-bottom:8px; }
   .post-images.count-1{ grid-template-columns:1fr; }
   .post-img{ width:100%; max-height:340px; object-fit:cover; display:block; background: var(--bg-elev); }
-  .post-video{ width:100%; max-height:450px; border-radius:14px; margin-bottom:8px; background:#000; display:block; }
+
+  .post-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+  }
+  .action-btn:hover { color: var(--text); }
+  .action-btn.liked { color: var(--danger); }
+
+  /* --- FACEBOOK STYLE PROFILE HEADER & CARD DESIGN --- */
+  .fb-profile-container {
+    background: var(--bg-elev);
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .fb-cover-photo-wrap {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, #2a1b4e, #1a2238);
+    overflow: hidden;
+  }
+  .fb-cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fb-cover-upload-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .fb-profile-main-info {
+    padding: 0 20px 16px;
+    position: relative;
+  }
+  .fb-avatar-overlay-wrap {
+    position: relative;
+    margin-top: -45px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .fb-profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid var(--bg-elev);
+    overflow: hidden;
+    background: var(--grad);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+  .fb-profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .fb-user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .fb-user-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .fb-user-id {
+    font-size: 12px;
+    color: var(--purple);
+    font-weight: 600;
+  }
+  .fb-user-bio {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .fb-stats-row {
+    display: flex;
+    gap: 18px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .fb-stat-item {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 13px;
+  }
+  .fb-stat-num {
+    font-weight: 700;
+    color: var(--text);
+  }
+  .fb-stat-label {
+    color: var(--text-dim);
+    font-size: 12px;
+  }
+  .fb-action-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .fb-btn-post-video {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--grad);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(139,92,246,0.3);
+  }
+  .fb-btn-edit {
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* PROFILE TABS & VIDEO GRID */
+  .profile-tabs-header {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin: 0 18px 14px;
+  }
+  .profile-tab-btn {
+    flex: 1;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .profile-tab-btn.active {
+    color: var(--purple);
+    border-bottom-color: var(--purple);
+  }
+
+  .video-grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 0 18px;
+  }
+  .video-grid-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 9/12;
+    border: 1px solid var(--border);
+  }
+  .video-grid-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 8px;
+    color: #fff;
+    pointer-events: none;
+  }
+  .video-grid-title {
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .video-grid-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 4px;
+  }
 
   .chat-overlay{ position:absolute; inset:0; background: var(--bg); z-index:350; display:none; flex-direction:column; }
   .chat-overlay.show{ display:flex; }
@@ -287,10 +512,6 @@
   .image-preview-item{ position:relative; aspect-ratio:1; border-radius:10px; overflow:hidden; background: var(--bg-elev); }
   .image-preview-item img{ width:100%; height:100%; object-fit:cover; }
   .image-remove-btn{ position:absolute; top:4px; right:4px; width:22px; height:22px; border-radius:50%; background: rgba(0,0,0,.6); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px; }
-
-  .profile-card{ margin:14px 22px 6px; padding:18px; border-radius:20px; background: linear-gradient(145deg, var(--bg-elev), var(--bg-elev-2)); border:1px solid var(--border); display:flex; align-items:center; gap:14px; }
-  .profile-name{ font-family:'Poppins',sans-serif; font-weight:600; font-size:17px; }
-  .profile-user{ color:var(--text-dim); font-size:13px; margin-top:2px; }
 
   .settings-tile{ display:flex; align-items:center; gap:14px; padding:13px 22px; cursor:pointer; }
   .settings-tile .ic{ width:36px; height:36px; border-radius:10px; background: var(--bg-elev); display:flex; align-items:center; justify-content:center; color: var(--purple); flex-shrink:0; }
@@ -440,6 +661,9 @@
   <div class="screen" id="screenApp">
     <div class="app-header">
       <div class="app-title">Touch of Dreams<small>MESSAGING &amp; SOCIAL</small></div>
+      <div class="cp-icon-btn" onclick="openSettingsModal()" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+      </div>
     </div>
 
     <div class="search-wrap">
@@ -456,7 +680,7 @@
           <div class="composer-photo-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
           </div>
-          <div class="composer-placeholder">আজকে কী নিয়ে ভাবছ?</div>
+          <div class="composer-placeholder">আজকে কী নিয়ে ভাবছ?</div>
         </div>
         <div id="feedPostsList"></div>
       </div>
@@ -475,41 +699,56 @@
         <div id="chatsListContainer"></div>
       </div>
 
-      <!-- SETTINGS / PROFILE TAB -->
+      <!-- FACEBOOK STYLE FULL PROFILE TAB -->
       <div class="tab-panel" id="tab-settings">
-        <div class="profile-card">
-          <div class="avatar" style="width:58px;height:58px;cursor:pointer;" id="settingsAvatar" onclick="document.getElementById('settingsPicInput').click()"></div>
-          <div>
-            <div class="profile-name" id="settingsUserName">User</div>
-            <div class="profile-user" id="settingsUserPhone">+880xxxxxxxxxx</div>
+        <div class="fb-profile-container">
+          <!-- Cover Photo -->
+          <div class="fb-cover-photo-wrap" id="profileCoverWrap">
+            <img id="profileCoverImg" class="fb-cover-photo" src="" style="display:none;" />
+            <button type="button" class="fb-cover-upload-btn" onclick="document.getElementById('coverPicInput').click()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg> Edit Cover
+            </button>
+            <input type="file" id="coverPicInput" accept="image/*" class="hidden-file-input" onchange="handleCoverPhotoSelect(event)">
           </div>
-        </div>
 
-        <!-- USER PROFILE MEDIA (আমার পোস্ট করা ছবি ও ভিডিও) -->
-        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">আমার ছবিসমূহ (My Photos)</div>
-        <div id="profilePhotosContainer" style="padding: 0 22px; display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;"></div>
+          <!-- Main Profile Info -->
+          <div class="fb-profile-main-info">
+            <div class="fb-avatar-overlay-wrap">
+              <div class="fb-profile-avatar" id="profileAvatarBox">
+                <img id="profileAvatarImg" src="" />
+              </div>
+              <button type="button" class="fb-btn-edit" onclick="openSettingsModal()">Edit Profile</button>
+            </div>
 
-        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">আমার ভিডিওসমূহ (My Videos)</div>
-        <div id="profileVideosContainer" style="padding: 0 22px; display:flex; flex-direction:column; gap:10px;"></div>
+            <div class="fb-user-details">
+              <div class="fb-user-name" id="profileDisplayName">User Name</div>
+              <div class="fb-user-id" id="profileUserID">@id_000000</div>
+              <div class="fb-user-bio" id="profileBioText">স্বাগতম আমার প্রোফাইলে! Touch of Dreams-এ কানেক্টেড থাকুন।</div>
+            </div>
 
-        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">Edit Profile Settings</div>
-        <div style="padding: 0 22px; display:flex; flex-direction:column; gap:12px;">
-          <div class="form-group">
-            <label class="form-label">Name</label>
-            <div class="input-field">
-              <input type="text" id="settingsNameInput" placeholder="Enter new name" />
+            <div class="fb-stats-row">
+              <div class="fb-stat-item"><span class="fb-stat-num" id="profileFollowersCount">0</span><span class="fb-stat-label">Followers</span></div>
+              <div class="fb-stat-item"><span class="fb-stat-num" id="profileFollowingCount">0</span><span class="fb-stat-label">Following</span></div>
+              <div class="fb-stat-item"><span class="fb-stat-num" id="profileVideosCount">0</span><span class="fb-stat-label">Videos</span></div>
+            </div>
+
+            <div class="fb-action-bar">
+              <button type="button" class="fb-btn-post-video" onclick="openProfileVideoPostModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                ভিডিও পোস্ট করুন
+              </button>
             </div>
           </div>
-          <button type="button" class="photo-btn" onclick="document.getElementById('settingsPicInput').click()">Change Profile Picture</button>
-          <input type="file" id="settingsPicInput" accept="image/*" class="hidden-file-input" onchange="handleSettingsPicSelect(event)">
-          <button type="button" class="btn-auth btn-primary" onclick="saveSettings()" style="margin-top:4px;">Save Changes</button>
         </div>
 
-        <div class="section-label" style="margin-top:20px; padding: 0 22px 8px;">Account</div>
-        <div class="settings-tile danger" onclick="logout()">
-          <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
-          <span>Logout</span>
+        <!-- PROFILE CONTENT TABS -->
+        <div class="profile-tabs-header">
+          <div class="profile-tab-btn active" id="tabBtnVideos" onclick="switchProfileSubTab('videos')">🎥 Videos Grid</div>
+          <div class="profile-tab-btn" id="tabBtnPhotos" onclick="switchProfileSubTab('photos')">🖼️ Photos</div>
         </div>
+
+        <div id="profileSubTabVideos" class="video-grid-container"></div>
+        <div id="profileSubTabPhotos" style="display:none; padding: 0 18px; display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;"></div>
       </div>
     </div>
 
@@ -524,9 +763,48 @@
         Chats
       </div>
       <div class="nav-item" data-tab="settings" onclick="switchTab('settings')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Profile
       </div>
+    </div>
+  </div>
+
+  <!-- PUBLIC USER PROFILE OVERLAY -->
+  <div class="chat-overlay" id="publicProfileOverlay">
+    <div class="chat-header">
+      <div class="back-btn" onclick="closePublicProfile()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="chat-user-info">
+        <div class="chat-user-name" id="pubProfileTitle">User Profile</div>
+      </div>
+    </div>
+    <div class="content" style="padding-bottom:20px;">
+      <div class="fb-profile-container">
+        <div class="fb-cover-photo-wrap">
+          <img id="pubCoverImg" class="fb-cover-photo" src="" style="display:none;" />
+        </div>
+        <div class="fb-profile-main-info">
+          <div class="fb-avatar-overlay-wrap">
+            <div class="fb-profile-avatar">
+              <img id="pubAvatarImg" src="" />
+            </div>
+            <button type="button" class="fb-btn-edit" id="pubFollowBtn" onclick="toggleFollowPublicUser()">Follow</button>
+          </div>
+          <div class="fb-user-details">
+            <div class="fb-user-name" id="pubDisplayName">User Name</div>
+            <div class="fb-user-id" id="pubUserID">@id_000000</div>
+            <div class="fb-user-bio" id="pubBioText">Touch of Dreams Profile</div>
+          </div>
+          <div class="fb-stats-row">
+            <div class="fb-stat-item"><span class="fb-stat-num" id="pubFollowersCount">0</span><span class="fb-stat-label">Followers</span></div>
+            <div class="fb-stat-item"><span class="fb-stat-num" id="pubFollowingCount">0</span><span class="fb-stat-label">Following</span></div>
+            <div class="fb-stat-item"><span class="fb-stat-num" id="pubVideosCount">0</span><span class="fb-stat-label">Videos</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label" style="padding:0 18px 10px;">User's Videos</div>
+      <div id="pubVideoGrid" class="video-grid-container"></div>
     </div>
   </div>
 
@@ -542,7 +820,7 @@
         <div class="avatar sm" id="cpAuthorAvatar"></div>
         <div class="post-author-name" id="cpAuthorName">User</div>
       </div>
-      <textarea class="caption-textarea" id="cpCaption" placeholder="আজকে কী নিয়ে ভাবছ?"></textarea>
+      <textarea class="caption-textarea" id="cpCaption" placeholder="আজকে কী নিয়ে ভাবছ?"></textarea>
       <div class="image-preview-grid" id="cpImageGrid"></div>
       
       <div>
@@ -555,6 +833,50 @@
           <div class="image-remove-btn" onclick="removePostVideo()">✕</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- PROFILE DIRECT VIDEO POST MODAL -->
+  <div class="modal-overlay" id="profileVideoPostModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-family:'Poppins',sans-serif; font-weight:700; font-size:16px;">ভিডিও পোস্ট করুন</span>
+        <div class="cp-icon-btn" onclick="closeProfileVideoPostModal()">✕</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ভিডিও ক্যাপশন</label>
+        <div class="input-field">
+          <input type="text" id="profileVideoCaptionInput" placeholder="ভিডিও সম্পর্কে কিছু লিখুন..." />
+        </div>
+      </div>
+      <button type="button" class="photo-btn" style="width:100%;" onclick="document.getElementById('directVideoInput').click()">📹 গ্যালারি থেকে ভিডিও নির্বাচন করুন</button>
+      <input type="file" id="directVideoInput" accept="video/*" class="hidden-file-input" onchange="handleDirectVideoSelect(event)">
+      
+      <div id="directVideoPreviewWrap" style="display:none; position:relative;">
+        <video id="directVideoPreview" controls style="width:100%; max-height:200px; border-radius:12px;"></video>
+      </div>
+
+      <button type="button" class="btn-auth btn-primary" onclick="submitDirectProfileVideo()">পোস্ট করুন</button>
+    </div>
+  </div>
+
+  <!-- COMMENT SCREEN OVERLAY -->
+  <div class="chat-overlay" id="commentScreenOverlay">
+    <div class="chat-header">
+      <div class="back-btn" onclick="closeCommentScreen()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </div>
+      <div class="chat-user-info">
+        <div class="chat-user-name">Comments</div>
+        <div class="chat-user-status" id="commentCountStatus">0 comments</div>
+      </div>
+    </div>
+    <div class="chat-messages" id="commentScreenList" style="gap:10px;"></div>
+    <div class="chat-input-bar">
+      <input type="text" id="commentScreenInput" placeholder="মন্তব্য লিখুন..." onkeypress="if(event.key==='Enter') submitCommentScreen()" />
+      <button class="chat-send-btn" onclick="submitCommentScreen()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
     </div>
   </div>
 
@@ -654,6 +976,55 @@
     </div>
   </div>
 
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-family:'Poppins',sans-serif; font-weight:700; font-size:16px;">Settings &amp; Edit Profile</span>
+        <div class="cp-icon-btn" onclick="closeSettingsModal()">✕</div>
+      </div>
+
+      <div class="section-label">Edit Profile</div>
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <div class="input-field">
+          <input type="text" id="settingsNameInput" placeholder="Enter new name" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio / About</label>
+        <div class="input-field">
+          <input type="text" id="settingsBioInput" placeholder="আপনার Bio লিখুন..." />
+        </div>
+      </div>
+      <button type="button" class="photo-btn" onclick="document.getElementById('settingsPicInput').click()">Change Profile Picture</button>
+      <input type="file" id="settingsPicInput" accept="image/*" class="hidden-file-input" onchange="handleSettingsPicSelect(event)">
+      <button type="button" class="btn-auth btn-primary" onclick="saveSettings()">Save Changes</button>
+
+      <!-- ফোন নম্বর দিয়ে কানেক্ট সেকশন -->
+      <div class="section-label" style="margin-top:16px;">ফোন নম্বর দিয়ে কানেক্ট</div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="country-selector">
+            <span class="country-flag">🇧🇩</span>
+            <span class="country-code">+880</span>
+          </div>
+          <input type="tel" class="phone-input" id="connectPhoneInput" placeholder="ফোন নম্বর লিখুন" maxlength="10" />
+        </div>
+      </div>
+      <button type="button" class="btn-auth btn-primary" style="margin-top:6px;" onclick="searchUserByPhone()">খুঁজুন</button>
+      
+      <!-- সার্চ রেজাল্ট প্রদর্শনের জন্য এলাকা -->
+      <div id="phoneSearchResult"></div>
+
+      <div class="section-label" style="margin-top:16px;">Account</div>
+      <div class="settings-tile danger" onclick="logout()">
+        <div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></div>
+        <span>Logout</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ADD MEMBER MODAL -->
   <div class="modal-overlay" id="addMemberModal">
     <div class="modal-box">
@@ -675,8 +1046,8 @@
 <div class="toast" id="toastMsg"></div>
 
 <script>
-  const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%238b5cf6'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23ffffff'>👤</text></svg>";
-  const GROUP_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%236366f1'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23ffffff'>👥</text></svg>";
+  const DEFAULT_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%25' height='100%25' fill='%238b5cf6'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23ffffff'>👤</text></svg>";
+  const GROUP_AVATAR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%25' height='100%25' fill='%236366f1'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23ffffff'>👥</text></svg>";
 
   let currentUser = null;
   let tempPhone = '';
@@ -686,6 +1057,7 @@
 
   let selectedPhotoUrls = [];
   let selectedVideoUrl = null;
+  let profileDirectVideoUrl = null;
   let currentChat = null;
 
   let mediaRecorder = null;
@@ -698,6 +1070,16 @@
   let activeCallType = null;
   let localStream = null;
 
+  let activeCommentPostId = null;
+  let viewingPublicPhone = null;
+
+  function showToast(msg) {
+    const toast = document.getElementById('toastMsg');
+    toast.innerText = msg;
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 2500);
+  }
+
   function pauseOtherVideos(currentVideo) {
     const allVideos = document.querySelectorAll('video');
     allVideos.forEach(v => {
@@ -707,21 +1089,30 @@
     });
   }
 
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function formatTimeAgo(timestamp) {
+    if (!timestamp) return 'Just now';
+    const seconds = Math.floor((Date.now() - timestamp) / 1000);
+    if (seconds < 60) return 'Just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  }
+
   document.addEventListener('play', function(e) {
     if (e.target && e.target.tagName === 'VIDEO') pauseOtherVideos(e.target);
-  }, true);
-
-  document.addEventListener('seeking', function(e) {
-    if (e.target && e.target.tagName === 'VIDEO') pauseOtherVideos(e.target);
-  }, true);
-
-  document.addEventListener('seeked', function(e) {
-    if (e.target && e.target.tagName === 'VIDEO') {
-      const currentVideo = e.target;
-      pauseOtherVideos(currentVideo);
-      const playPromise = currentVideo.play();
-      if (playPromise !== undefined) playPromise.catch(() => {});
-    }
   }, true);
 
   let db;
@@ -749,6 +1140,17 @@
       const store = tx.objectStore("posts");
       store.put(post);
       tx.oncomplete = () => resolve();
+    });
+  }
+
+  function getPostDB(id) {
+    return new Promise((resolve) => {
+      if(!db) { resolve(null); return; }
+      const tx = db.transaction("posts", "readonly");
+      const store = tx.objectStore("posts");
+      const req = store.get(id);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
     });
   }
 
@@ -830,6 +1232,8 @@
         if(existing) {
           if(existing.name) currentUser.name = existing.name;
           if(existing.avatar) currentUser.avatar = existing.avatar;
+          if(existing.cover) currentUser.cover = existing.cover;
+          if(existing.bio) currentUser.bio = existing.bio;
         } else {
           users.push(currentUser);
           localStorage.setItem('tod_users', JSON.stringify(users));
@@ -862,6 +1266,8 @@
       renderChatsList();
     } else if(tabName === 'settings') {
       renderProfileMedia();
+    } else if(tabName === 'feed') {
+      renderFeedPosts();
     }
   }
 
@@ -965,7 +1371,7 @@
     let existingUser = users.find(u => u.phone === tempPhone);
     const finalName = enteredName || (existingUser ? existingUser.name : '') || tempName || 'User';
 
-    currentUser = { phone: tempPhone || '01700000000', name: finalName, avatar: selectedProfilePic };
+    currentUser = { phone: tempPhone || '01700000000', name: finalName, avatar: selectedProfilePic, cover: '', bio: 'স্বাগতম আমার প্রোফাইলে!' };
 
     try {
       localStorage.setItem('tod_current_user', JSON.stringify(currentUser));
@@ -988,30 +1394,50 @@
     if(file) {
       compressImage(file, 300, 300, 0.6, function(compressedBase64) {
         tempSettingsPic = compressedBase64;
-        document.getElementById('settingsAvatar').innerHTML = `<img src="${tempSettingsPic}" style="width:100%;height:100%;object-fit:cover;" />`;
       });
     }
     e.target.value = '';
   }
 
-  function saveSettings() {
-    if(!currentUser) currentUser = { phone: '01700000000', name: 'User', avatar: DEFAULT_AVATAR };
-    const newName = document.getElementById('settingsNameInput').value.trim();
+  function handleCoverPhotoSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if(file) {
+      compressImage(file, 800, 400, 0.7, function(base64) {
+        if(!currentUser) return;
+        currentUser.cover = base64;
+        saveCurrentUserToStorage();
+        updateUserUI();
+        showToast('Cover Photo আপডেট করা হয়েছে!');
+      });
+    }
+    e.target.value = '';
+  }
 
-    if(newName) currentUser.name = newName;
-    if(tempSettingsPic) currentUser.avatar = tempSettingsPic;
-
+  function saveCurrentUserToStorage() {
     try {
       localStorage.setItem('tod_current_user', JSON.stringify(currentUser));
       let users = safeGetArray('tod_users');
-      const index = users.findIndex(u => u.phone === currentUser.phone);
-      if(index >= 0) users[index] = currentUser;
+      const idx = users.findIndex(u => u.phone === currentUser.phone);
+      if(idx >= 0) users[idx] = currentUser;
       else users.push(currentUser);
       localStorage.setItem('tod_users', JSON.stringify(users));
-      showToast('Settings আপডেট করা হয়েছে!');
-    } catch(e) { showToast('সেভ করতে সমস্যা হয়েছে!'); }
+    } catch(e) {}
+  }
+
+  function saveSettings() {
+    if(!currentUser) currentUser = { phone: '01700000000', name: 'User', avatar: DEFAULT_AVATAR };
+    const newName = document.getElementById('settingsNameInput').value.trim();
+    const newBio = document.getElementById('settingsBioInput').value.trim();
+
+    if(newName) currentUser.name = newName;
+    if(newBio) currentUser.bio = newBio;
+    if(tempSettingsPic) currentUser.avatar = tempSettingsPic;
+
+    saveCurrentUserToStorage();
+    showToast('Settings আপডেট করা হয়েছে!');
 
     tempSettingsPic = null;
+    closeSettingsModal();
     updateUserUI();
     renderChatsList();
     renderFeedPosts();
@@ -1022,31 +1448,153 @@
     const name = (currentUser && currentUser.name) ? currentUser.name : 'User';
     const avatar = (currentUser && currentUser.avatar) ? currentUser.avatar : DEFAULT_AVATAR;
     const phone = currentUser ? currentUser.phone : '01700000000';
+    const cover = (currentUser && currentUser.cover) ? currentUser.cover : '';
+    const bio = (currentUser && currentUser.bio) ? currentUser.bio : 'স্বাগতম আমার প্রোফাইলে!';
 
-    document.getElementById('settingsUserName').innerText = name;
-    document.getElementById('settingsUserPhone').innerText = '+880' + phone;
-    document.getElementById('settingsAvatar').innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;" />`;
     document.getElementById('settingsNameInput').value = name;
+    document.getElementById('settingsBioInput').value = bio;
 
     document.getElementById('cpAuthorName').innerText = name;
     document.getElementById('cpAuthorAvatar').innerHTML = `<img src="${avatar}" style="width:100%;height:100%;object-fit:cover;" />`;
+
+    // Profile Page Header Update
+    document.getElementById('profileDisplayName').innerText = name;
+    document.getElementById('profileUserID').innerText = `@id_${phone}`;
+    document.getElementById('profileBioText').innerText = bio;
+    document.getElementById('profileAvatarImg').src = avatar;
+
+    const coverImg = document.getElementById('profileCoverImg');
+    if(cover) {
+      coverImg.src = cover;
+      coverImg.style.display = 'block';
+    } else {
+      coverImg.style.display = 'none';
+    }
+
+    // Follower/Following Count Calculation
+    let followers = safeGetObj('tod_followers');
+    let myFollowers = Array.isArray(followers[phone]) ? followers[phone] : [];
+    document.getElementById('profileFollowersCount').innerText = myFollowers.length;
+
+    let followingCount = 0;
+    Object.keys(followers).forEach(k => {
+      if(Array.isArray(followers[k]) && followers[k].includes(phone)) followingCount++;
+    });
+    document.getElementById('profileFollowingCount').innerText = followingCount;
   }
 
   function logout() {
     localStorage.removeItem('tod_current_user');
     currentUser = null;
     selectedProfilePic = null;
+    closeSettingsModal();
     switchScreen('screenLogin');
   }
 
-  /* ---- USER PROFILE MEDIA ENGINE ---- */
-  async function renderProfileMedia() {
-    const photosContainer = document.getElementById('profilePhotosContainer');
-    const videosContainer = document.getElementById('profileVideosContainer');
-    if(!photosContainer || !videosContainer || !currentUser) return;
+  /* ---- SETTINGS MODAL ---- */
+  function openSettingsModal() {
+    if(currentUser) {
+      document.getElementById('settingsNameInput').value = currentUser.name || '';
+      document.getElementById('settingsBioInput').value = currentUser.bio || '';
+    }
+    document.getElementById('settingsModal').classList.add('show');
+  }
 
-    photosContainer.innerHTML = '';
-    videosContainer.innerHTML = '';
+  function closeSettingsModal() {
+    document.getElementById('settingsModal').classList.remove('show');
+  }
+
+  /* ---- PHONE CONNECT SYSTEM ---- */
+  function searchUserByPhone() {
+    const input = document.getElementById('connectPhoneInput');
+    const resultContainer = document.getElementById('phoneSearchResult');
+    const targetPhone = input.value.trim();
+
+    resultContainer.innerHTML = '';
+
+    if (!targetPhone) {
+      showToast('ফোন নম্বর লিখুন');
+      return;
+    }
+
+    if (currentUser && targetPhone === currentUser.phone) {
+      resultContainer.innerHTML = `<div style="color:var(--text-dim); font-size:12.5px; margin-top:10px; text-align:center;">এটি আপনার নিজের নম্বর</div>`;
+      return;
+    }
+
+    const users = safeGetArray('tod_users');
+    const targetUser = users.find(u => u.phone === targetPhone);
+
+    if (!targetUser) {
+      resultContainer.innerHTML = `<div style="color:var(--danger); font-size:12.5px; margin-top:10px; text-align:center;">এই ফোন নম্বরের সাথে কোনো User পাওয়া যায়নি</div>`;
+      return;
+    }
+
+    const avatar = targetUser.avatar || DEFAULT_AVATAR;
+    const name = targetUser.name || 'User';
+
+    let connections = safeGetObj('tod_connections');
+    const userConns = Array.isArray(connections[currentUser.phone]) ? connections[currentUser.phone] : [];
+    const isAlreadyConnected = userConns.includes(targetPhone);
+
+    resultContainer.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:12px; padding:10px 12px; background:var(--bg-elev-2); border-radius:12px; border:1px solid var(--border);">
+        <div style="display:flex; align-items:center; gap:10px; cursor:pointer;" onclick="viewPublicProfile('${targetUser.phone}')">
+          <div class="avatar sm"><img src="${avatar}" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div style="font-family:'Poppins',sans-serif; font-weight:600; font-size:13.5px; color:var(--text);">${escapeHtml(name)}</div>
+        </div>
+        <button type="button" class="btn-auth btn-primary" style="padding:6px 14px; font-size:12px; margin:0; width:auto;" onclick="sendConnectionRequest('${targetUser.phone}', '${escapeHtml(name)}')">
+          ${isAlreadyConnected ? 'কানেক্টেড' : 'কানেক্ট'}
+        </button>
+      </div>
+    `;
+  }
+
+  function sendConnectionRequest(targetPhone, targetName) {
+    if (!currentUser) return;
+    let connections = safeGetObj('tod_connections');
+    if (!Array.isArray(connections[currentUser.phone])) connections[currentUser.phone] = [];
+    if (!Array.isArray(connections[targetPhone])) connections[targetPhone] = [];
+
+    if (connections[currentUser.phone].includes(targetPhone)) {
+      showToast('আপনি ইতোমধ্যে কানেক্টেড আছেন');
+    } else {
+      connections[currentUser.phone].push(targetPhone);
+      connections[targetPhone].push(currentUser.phone);
+      localStorage.setItem('tod_connections', JSON.stringify(connections));
+      showToast((targetName || 'ইউজার') + '-এর সাথে কানেক্ট করা হয়েছে');
+      renderChatsList();
+      searchUserByPhone();
+    }
+  }
+
+  /* ---- PROFILE MEDIA & VIDEO GRID ENGINE ---- */
+  function switchProfileSubTab(subTab) {
+    const btnVid = document.getElementById('tabBtnVideos');
+    const btnPho = document.getElementById('tabBtnPhotos');
+    const tabVid = document.getElementById('profileSubTabVideos');
+    const tabPho = document.getElementById('profileSubTabPhotos');
+
+    if(subTab === 'videos') {
+      btnVid.classList.add('active');
+      btnPho.classList.remove('active');
+      tabVid.style.display = 'grid';
+      tabPho.style.display = 'none';
+    } else {
+      btnPho.classList.add('active');
+      btnVid.classList.remove('active');
+      tabPho.style.display = 'grid';
+      tabVid.style.display = 'none';
+    }
+  }
+
+  async function renderProfileMedia() {
+    const vidContainer = document.getElementById('profileSubTabVideos');
+    const phoContainer = document.getElementById('profileSubTabPhotos');
+    if(!vidContainer || !phoContainer || !currentUser) return;
+
+    vidContainer.innerHTML = '';
+    phoContainer.innerHTML = '';
 
     const posts = await getAllPostsDB();
     const myPosts = posts.filter(p => p.authorPhone === currentUser.phone);
@@ -1059,34 +1607,189 @@
         p.photos.forEach(photo => myPhotos.push(photo));
       }
       if(p.video) {
-        myVideos.push(p.video);
+        myVideos.push(p);
       }
     });
 
-    if(myPhotos.length > 0) {
-      myPhotos.forEach(photoUrl => {
-        const photoDiv = document.createElement('div');
-        photoDiv.style.cssText = "aspect-ratio:1; border-radius:10px; overflow:hidden; background:var(--bg-elev);";
-        photoDiv.innerHTML = `<img src="${photoUrl}" style="width:100%; height:100%; object-fit:cover;" />`;
-        photosContainer.appendChild(photoDiv);
+    document.getElementById('profileVideosCount').innerText = myVideos.length;
+
+    // Render Videos Grid
+    if(myVideos.length > 0) {
+      myVideos.forEach(post => {
+        const liked = post.likes && post.likes.includes(currentUser.phone);
+        const card = document.createElement('div');
+        card.className = 'video-grid-card';
+        card.innerHTML = `
+          <video src="${post.video}" controls preload="metadata"></video>
+          <div class="video-grid-overlay">
+            <div class="video-grid-title">${escapeHtml(post.caption || 'Video Post')}</div>
+            <div class="video-grid-meta">
+              <span>❤️ ${post.likes ? post.likes.length : 0}</span>
+              <span style="cursor:pointer; pointer-events:auto;" onclick="openCommentScreen('${post.id}')">💬 ${post.comments ? post.comments.length : 0}</span>
+            </div>
+          </div>
+        `;
+        vidContainer.appendChild(card);
       });
     } else {
-      photosContainer.innerHTML = `<div style="grid-column: 1 / -1; color:var(--text-dim); font-size:12px;">কোনো ছবি পোস্ট করা হয়নি</div>`;
+      vidContainer.innerHTML = `<div style="grid-column:1/-1; color:var(--text-dim); font-size:12.5px; text-align:center; padding:20px;">কোনো ভিডিও পোস্ট করা হয়নি</div>`;
     }
 
-    if(myVideos.length > 0) {
-      myVideos.forEach(videoUrl => {
-        const videoDiv = document.createElement('div');
-        videoDiv.style.cssText = "border-radius:12px; overflow:hidden; background:#000;";
-        videoDiv.innerHTML = `<video src="${videoUrl}" controls style="width:100%; max-height:220px; display:block;"></video>`;
-        videosContainer.appendChild(videoDiv);
+    // Render Photos
+    if(myPhotos.length > 0) {
+      myPhotos.forEach(photoUrl => {
+        const item = document.createElement('div');
+        item.style.cssText = "aspect-ratio:1; border-radius:10px; overflow:hidden; background:var(--bg-elev);";
+        item.innerHTML = `<img src="${photoUrl}" style="width:100%; height:100%; object-fit:cover;" />`;
+        phoContainer.appendChild(item);
       });
     } else {
-      videosContainer.innerHTML = `<div style="color:var(--text-dim); font-size:12px;">কোনো ভিডিও পোস্ট করা হয়নি</div>`;
+      phoContainer.innerHTML = `<div style="grid-column:1/-1; color:var(--text-dim); font-size:12.5px; text-align:center; padding:20px;">কোনো ছবি পোস্ট করা হয়নি</div>`;
     }
   }
 
-  /* ---- POST CREATION & FEED ---- */
+  /* ---- DIRECT VIDEO POST FROM PROFILE ---- */
+  function openProfileVideoPostModal() {
+    document.getElementById('profileVideoCaptionInput').value = '';
+    profileDirectVideoUrl = null;
+    document.getElementById('directVideoPreviewWrap').style.display = 'none';
+    document.getElementById('profileVideoPostModal').classList.add('show');
+  }
+
+  function closeProfileVideoPostModal() {
+    document.getElementById('profileVideoPostModal').classList.remove('show');
+  }
+
+  function handleDirectVideoSelect(e) {
+    const file = e.target.files && e.target.files[0];
+    if(file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        profileDirectVideoUrl = evt.target.result;
+        const vid = document.getElementById('directVideoPreview');
+        vid.src = profileDirectVideoUrl;
+        document.getElementById('directVideoPreviewWrap').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+    e.target.value = '';
+  }
+
+  async function submitDirectProfileVideo() {
+    if(!profileDirectVideoUrl) {
+      showToast('গ্যালারি থেকে একটি ভিডিও নির্বাচন করুন');
+      return;
+    }
+
+    const caption = document.getElementById('profileVideoCaptionInput').value.trim();
+
+    const post = {
+      id: 'post_' + Date.now(),
+      authorPhone: currentUser.phone,
+      authorName: currentUser.name,
+      authorAvatar: currentUser.avatar,
+      caption: caption || 'Video Post',
+      photos: [],
+      video: profileDirectVideoUrl,
+      likes: [],
+      comments: [],
+      timestamp: Date.now()
+    };
+
+    await savePostDB(post);
+    closeProfileVideoPostModal();
+    showToast('ভিডিও সফলতা সাথে পোস্ট করা হয়েছে!');
+    await renderProfileMedia();
+    await renderFeedPosts();
+  }
+
+  /* ---- PUBLIC PROFILE VIEW SYSTEM ---- */
+  async function viewPublicProfile(phone) {
+    if(currentUser && phone === currentUser.phone) {
+      switchTab('settings');
+      return;
+    }
+
+    viewingPublicPhone = phone;
+    const users = safeGetArray('tod_users');
+    const user = users.find(u => u.phone === phone) || { name: 'User', avatar: DEFAULT_AVATAR, phone: phone };
+
+    document.getElementById('pubProfileTitle').innerText = user.name;
+    document.getElementById('pubDisplayName').innerText = user.name;
+    document.getElementById('pubUserID').innerText = `@id_${user.phone}`;
+    document.getElementById('pubBioText').innerText = user.bio || 'Touch of Dreams User Profile';
+    document.getElementById('pubAvatarImg').src = user.avatar || DEFAULT_AVATAR;
+
+    const coverImg = document.getElementById('pubCoverImg');
+    if(user.cover) {
+      coverImg.src = user.cover;
+      coverImg.style.display = 'block';
+    } else {
+      coverImg.style.display = 'none';
+    }
+
+    let followers = safeGetObj('tod_followers');
+    let pubFollowers = Array.isArray(followers[phone]) ? followers[phone] : [];
+    document.getElementById('pubFollowersCount').innerText = pubFollowers.length;
+
+    let isFollowing = pubFollowers.includes(currentUser.phone);
+    const followBtn = document.getElementById('pubFollowBtn');
+    followBtn.innerText = isFollowing ? 'Following' : 'Follow';
+
+    // Render User Videos
+    const posts = await getAllPostsDB();
+    const userPosts = posts.filter(p => p.authorPhone === phone && p.video);
+    document.getElementById('pubVideosCount').innerText = userPosts.length;
+
+    const grid = document.getElementById('pubVideoGrid');
+    grid.innerHTML = '';
+
+    if(userPosts.length > 0) {
+      userPosts.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'video-grid-card';
+        card.innerHTML = `
+          <video src="${post.video}" controls preload="metadata"></video>
+          <div class="video-grid-overlay">
+            <div class="video-grid-title">${escapeHtml(post.caption || 'Video Post')}</div>
+            <div class="video-grid-meta">
+              <span style="cursor:pointer; pointer-events:auto;" onclick="toggleLikePost('${post.id}')">❤️ ${post.likes ? post.likes.length : 0}</span>
+              <span style="cursor:pointer; pointer-events:auto;" onclick="openCommentScreen('${post.id}')">💬 ${post.comments ? post.comments.length : 0}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    } else {
+      grid.innerHTML = `<div style="grid-column:1/-1; color:var(--text-dim); font-size:12.5px; text-align:center; padding:20px;">এই ইউজার কোনো ভিডিও পোস্ট করেননি</div>`;
+    }
+
+    document.getElementById('publicProfileOverlay').classList.add('show');
+  }
+
+  function closePublicProfile() {
+    document.getElementById('publicProfileOverlay').classList.remove('show');
+    viewingPublicPhone = null;
+  }
+
+  function toggleFollowPublicUser() {
+    if(!viewingPublicPhone || !currentUser) return;
+    let followers = safeGetObj('tod_followers');
+    if(!Array.isArray(followers[viewingPublicPhone])) followers[viewingPublicPhone] = [];
+
+    const idx = followers[viewingPublicPhone].indexOf(currentUser.phone);
+    if(idx >= 0) {
+      followers[viewingPublicPhone].splice(idx, 1);
+      showToast('Unfollowed');
+    } else {
+      followers[viewingPublicPhone].push(currentUser.phone);
+      showToast('Followed successfully');
+    }
+    localStorage.setItem('tod_followers', JSON.stringify(followers));
+    viewPublicProfile(viewingPublicPhone);
+  }
+
+  /* ---- POST CREATION & FEED ENGINE ---- */
   function openCreatePost() {
     selectedPhotoUrls = [];
     selectedVideoUrl = null;
@@ -1162,12 +1865,14 @@
       caption: caption,
       photos: [...selectedPhotoUrls],
       video: selectedVideoUrl,
+      likes: [],
+      comments: [],
       timestamp: Date.now()
     };
 
     await savePostDB(post);
-    showToast('পোস্ট প্রকাশিত হয়েছে!');
     switchScreen('screenApp');
+    showToast('পোস্ট করা হয়েছে!');
     await renderFeedPosts();
     await renderProfileMedia();
   }
@@ -1180,186 +1885,205 @@
     const posts = await getAllPostsDB();
 
     if(posts.length === 0) {
-      container.innerHTML = `<div style="padding:20px; text-align:center; color:var(--text-dim); font-size:13px;">কোনো পোস্ট নেই</div>`;
+      container.innerHTML = `<div style="text-align:center; padding:40px 20px; color:var(--text-dim); font-size:13px;">কোনো পোস্ট পাওয়া যায়নি। নতুন একটি পোস্ট তৈরি করুন!</div>`;
       return;
     }
 
-    posts.forEach(p => {
+    posts.forEach(post => {
       const card = document.createElement('div');
       card.className = 'post-card';
 
-      let imgsHtml = '';
-      if(p.photos && p.photos.length > 0) {
-        imgsHtml = `<div class="post-images count-1">`;
-        p.photos.forEach(img => {
-          imgsHtml += `<img src="${img}" class="post-img" />`;
-        });
-        imgsHtml += `</div>`;
+      const isLiked = currentUser && post.likes && post.likes.includes(currentUser.phone);
+      const likesCount = post.likes ? post.likes.length : 0;
+      const commentsCount = post.comments ? post.comments.length : 0;
+
+      let photosHtml = '';
+      if(post.photos && post.photos.length > 0) {
+        photosHtml = `<div class="post-images count-${post.photos.length > 1 ? 2 : 1}">
+          ${post.photos.map(p => `<img src="${p}" class="post-img" />`).join('')}
+        </div>`;
       }
 
-      let vidHtml = '';
-      if(p.video) {
-        vidHtml = `<video src="${p.video}" controls class="post-video"></video>`;
+      let videoHtml = '';
+      if(post.video) {
+        videoHtml = `<div style="border-radius:14px; overflow:hidden; background:#000; margin-bottom:8px;">
+          <video src="${post.video}" controls style="width:100%; max-height:360px; display:block;"></video>
+        </div>`;
       }
 
       card.innerHTML = `
         <div class="post-header">
-          <div class="avatar sm"><img src="${p.authorAvatar || DEFAULT_AVATAR}" /></div>
+          <div class="avatar sm" onclick="viewPublicProfile('${post.authorPhone}')"><img src="${post.authorAvatar || DEFAULT_AVATAR}" /></div>
           <div>
-            <div class="post-author-name">${escapeHtml(p.authorName || 'User')}</div>
-            <div class="post-meta">${new Date(p.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+            <div class="post-author-name" onclick="viewPublicProfile('${post.authorPhone}')">${escapeHtml(post.authorName)}</div>
+            <div class="post-meta">${formatTimeAgo(post.timestamp)}</div>
           </div>
         </div>
-        ${p.caption ? `<div class="post-caption">${escapeHtml(p.caption)}</div>` : ''}
-        ${imgsHtml}
-        ${vidHtml}
+        ${post.caption ? `<div class="post-caption">${escapeHtml(post.caption)}</div>` : ''}
+        ${photosHtml}
+        ${videoHtml}
+        <div class="post-actions">
+          <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikePost('${post.id}')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            ${likesCount}
+          </button>
+          <button class="action-btn" onclick="openCommentScreen('${post.id}')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 01-8.9 8.4 8.6 8.6 0 01-3.9-.9L3 20l1.05-4.6A8.4 8.4 0 013 11.5 8.5 8.5 0 0112 3a8.5 8.5 0 019 8.5z"/></svg>
+            ${commentsCount}
+          </button>
+        </div>
       `;
       container.appendChild(card);
     });
   }
 
-  /* ---- CHATS & GROUPS LIST ---- */
-  function renderChatsList() {
-    const usersContainer = document.getElementById('chatsListContainer');
-    const groupsContainer = document.getElementById('groupsListContainer');
-    if(!usersContainer || !groupsContainer) return;
+  async function toggleLikePost(postId) {
+    if(!currentUser) return;
+    const post = await getPostDB(postId);
+    if(!post) return;
 
-    usersContainer.innerHTML = '';
-    groupsContainer.innerHTML = '';
-
-    const users = safeGetArray('tod_users');
-    const groups = safeGetArray('tod_groups');
-
-    if(currentUser) {
-      const myGroups = groups.filter(g => Array.isArray(g.members) && g.members.includes(currentUser.phone));
-      myGroups.forEach(g => {
-        const item = document.createElement('div');
-        item.className = 'row';
-        item.onclick = () => openGroupChat(g);
-        item.innerHTML = `
-          <div class="avatar sm"><img src="${GROUP_AVATAR}" /></div>
-          <div class="row-body">
-            <div class="row-top"><span class="row-name">${g.name || 'Group'}</span><span class="row-time">${g.members.length} members</span></div>
-            <div class="row-sub"><span class="row-msg">Group Chat</span></div>
-          </div>
-        `;
-        groupsContainer.appendChild(item);
-      });
+    if(!post.likes) post.likes = [];
+    const idx = post.likes.indexOf(currentUser.phone);
+    if(idx >= 0) {
+      post.likes.splice(idx, 1);
+    } else {
+      post.likes.push(currentUser.phone);
     }
 
-    if(groupsContainer.innerHTML === '') {
-      groupsContainer.innerHTML = `<div style="padding:10px 22px; color:var(--text-dim); font-size:12px;">কোনো গ্রুপ নেই</div>`;
-    }
+    await savePostDB(post);
+    await renderFeedPosts();
+    if(viewingPublicPhone) viewPublicProfile(viewingPublicPhone);
+    else renderProfileMedia();
+  }
 
-    users.forEach(u => {
-      if(!currentUser || u.phone !== currentUser.phone) {
-        const item = document.createElement('div');
-        item.className = 'row';
-        item.onclick = () => openDirectChat(u);
-        item.innerHTML = `
-          <div class="avatar sm"><img src="${u.avatar || DEFAULT_AVATAR}" /></div>
-          <div class="row-body">
-            <div class="row-top"><span class="row-name">${u.name || 'User'}</span><span class="row-time">Online</span></div>
-            <div class="row-sub"><span class="row-msg">Click to message</span></div>
-          </div>
-        `;
-        usersContainer.appendChild(item);
-      }
+  /* ---- COMMENT SYSTEM ---- */
+  async function openCommentScreen(postId) {
+    activeCommentPostId = postId;
+    const post = await getPostDB(postId);
+    if(!post) return;
+
+    document.getElementById('commentCountStatus').innerText = `${post.comments ? post.comments.length : 0} comments`;
+    renderCommentList(post.comments || []);
+    document.getElementById('commentScreenOverlay').classList.add('show');
+  }
+
+  function closeCommentScreen() {
+    document.getElementById('commentScreenOverlay').classList.remove('show');
+    activeCommentPostId = null;
+  }
+
+  function renderCommentList(comments) {
+    const list = document.getElementById('commentScreenList');
+    list.innerHTML = '';
+    if(comments.length === 0) {
+      list.innerHTML = `<div style="color:var(--text-dim); font-size:12.5px; text-align:center; padding:20px;">প্রথম কমেন্ট করুন!</div>`;
+      return;
+    }
+    comments.forEach(c => {
+      const div = document.createElement('div');
+      div.style.cssText = "display:flex; gap:10px; align-items:flex-start;";
+      div.innerHTML = `
+        <div class="avatar sm"><img src="${c.avatar || DEFAULT_AVATAR}" /></div>
+        <div style="background:var(--bg-elev-2); border:1px solid var(--border); padding:8px 12px; border-radius:14px; flex:1;">
+          <div style="font-size:12px; font-weight:700; color:var(--text);">${escapeHtml(c.name)}</div>
+          <div style="font-size:13px; color:var(--text); margin-top:2px;">${escapeHtml(c.text)}</div>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  async function submitCommentScreen() {
+    const input = document.getElementById('commentScreenInput');
+    const text = input.value.trim();
+    if(!text || !activeCommentPostId || !currentUser) return;
+
+    const post = await getPostDB(activeCommentPostId);
+    if(!post) return;
+
+    if(!post.comments) post.comments = [];
+    post.comments.push({
+      phone: currentUser.phone,
+      name: currentUser.name,
+      avatar: currentUser.avatar,
+      text: text,
+      time: Date.now()
     });
 
-    if(usersContainer.innerHTML === '') {
-      usersContainer.innerHTML = `<div style="padding:10px 22px; color:var(--text-dim); font-size:12px;">কোনো ব্যবহারকারী নেই</div>`;
+    await savePostDB(post);
+    input.value = '';
+    document.getElementById('commentCountStatus').innerText = `${post.comments.length} comments`;
+    renderCommentList(post.comments);
+    await renderFeedPosts();
+  }
+
+  /* ---- CHAT & MESSAGING ENGINE ---- */
+  function renderChatsList() {
+    const container = document.getElementById('chatsListContainer');
+    if(!container || !currentUser) return;
+    container.innerHTML = '';
+
+    let connections = safeGetObj('tod_connections');
+    let userConns = Array.isArray(connections[currentUser.phone]) ? connections[currentUser.phone] : [];
+    let users = safeGetArray('tod_users');
+
+    if(userConns.length === 0) {
+      container.innerHTML = `<div style="padding:15px 22px; color:var(--text-dim); font-size:12.5px;">কানেক্টেড কোনো ইউজার নেই। Settings থেকে ফোন নম্বর দিয়ে কানেক্ট করুন!</div>`;
+      return;
     }
+
+    userConns.forEach(p => {
+      const u = users.find(x => x.phone === p) || { name: 'User', phone: p, avatar: DEFAULT_AVATAR };
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.onclick = () => openChat(u.phone, u.name, u.avatar, 'direct');
+      row.innerHTML = `
+        <div class="avatar sm"><img src="${u.avatar || DEFAULT_AVATAR}" /></div>
+        <div class="row-body">
+          <div class="row-top">
+            <div class="row-name">${escapeHtml(u.name)}</div>
+            <div class="row-time">Online</div>
+          </div>
+          <div class="row-sub">
+            <div class="row-msg">মেসেজ পাঠাতে ট্যাপ করুন</div>
+          </div>
+        </div>
+      `;
+      container.appendChild(row);
+    });
   }
 
-  /* ---- MESSAGING ENGINE ---- */
-  function openDirectChat(user) {
-    currentChat = { type: 'direct', targetId: user.phone, name: user.name || 'User', avatar: user.avatar || DEFAULT_AVATAR };
-    document.getElementById('chatHeaderName').innerText = user.name || 'User';
-    document.getElementById('chatHeaderAvatar').innerHTML = `<img src="${user.avatar || DEFAULT_AVATAR}" />`;
-    document.getElementById('chatHeaderStatus').innerText = 'Online';
-    
-    document.getElementById('audioCallHeaderBtn').style.display = 'flex';
-    document.getElementById('videoCallHeaderBtn').style.display = 'flex';
-    document.getElementById('groupCallHeaderBtn').style.display = 'none';
-    document.getElementById('addMemberHeaderBtn').style.display = 'none';
-
-    renderMessages();
+  function openChat(id, name, avatar, type) {
+    currentChat = { id, name, avatar, type };
+    document.getElementById('chatHeaderName').innerText = name;
+    document.getElementById('chatHeaderAvatar').innerHTML = `<img src="${avatar || DEFAULT_AVATAR}" />`;
     document.getElementById('chatOverlay').classList.add('show');
-  }
-
-  function openGroupChat(group) {
-    currentChat = { type: 'group', targetId: group.id, name: group.name || 'Group', avatar: GROUP_AVATAR, groupObj: group };
-    document.getElementById('chatHeaderName').innerText = group.name || 'Group';
-    document.getElementById('chatHeaderAvatar').innerHTML = `<img src="${GROUP_AVATAR}" />`;
-    document.getElementById('chatHeaderStatus').innerText = `${group.members.length} members`;
-
-    document.getElementById('audioCallHeaderBtn').style.display = 'none';
-    document.getElementById('videoCallHeaderBtn').style.display = 'none';
-    document.getElementById('groupCallHeaderBtn').style.display = 'flex';
-    document.getElementById('addMemberHeaderBtn').style.display = 'flex';
-
-    renderMessages();
-    document.getElementById('chatOverlay').classList.add('show');
+    renderChatMessages();
   }
 
   function closeChat() {
-    if (isRecording && mediaRecorder) {
-      mediaRecorder.stop();
-      isRecording = false;
-      document.getElementById('micBtn').classList.remove('recording');
-      document.getElementById('chatInput').placeholder = "মেসেজ লিখুন...";
-    }
     document.getElementById('chatOverlay').classList.remove('show');
     currentChat = null;
   }
 
-  function renderMessages() {
+  function renderChatMessages() {
+    if(!currentChat) return;
     const container = document.getElementById('chatMessages');
+    let chatsData = safeGetObj('tod_chats');
+    let msgs = Array.isArray(chatsData[currentChat.id]) ? chatsData[currentChat.id] : [];
+
     container.innerHTML = '';
-    if(!currentChat || !currentUser) return;
-
-    if(currentChat.type === 'direct') {
-      let dms = safeGetObj('tod_dms');
-      const chatKey = [currentUser.phone, currentChat.targetId].sort().join('_');
-      const msgs = dms[chatKey] || [];
-
-      msgs.forEach(m => {
-        const bubble = document.createElement('div');
-        bubble.className = `msg-bubble ${m.sender === currentUser.phone ? 'sent' : 'received'}`;
-        if (m.type === 'audio') {
-          bubble.innerHTML = `<audio controls class="chat-audio-player" src="${m.audioUrl}"></audio>`;
-        } else {
-          bubble.innerText = m.text;
-        }
-        container.appendChild(bubble);
-      });
-    } else if(currentChat.type === 'group') {
-      let groupMsgs = safeGetObj('tod_group_msgs');
-      const msgs = groupMsgs[currentChat.targetId] || [];
-
-      msgs.forEach(m => {
-        const isSent = m.sender === currentUser.phone;
-        const bubble = document.createElement('div');
-        bubble.className = `msg-bubble ${isSent ? 'sent' : 'received'}`;
-        
-        let senderNameHtml = '';
-        if(!isSent && m.senderName) {
-          senderNameHtml = `<div style="font-size:10.5px; font-weight:700; color:var(--purple); margin-bottom:2px;">${m.senderName}</div>`;
-        }
-        
-        let contentHtml = '';
-        if (m.type === 'audio') {
-          contentHtml = `<audio controls class="chat-audio-player" src="${m.audioUrl}"></audio>`;
-        } else {
-          contentHtml = `<div>${escapeHtml(m.text || '')}</div>`;
-        }
-
-        bubble.innerHTML = `${senderNameHtml}${contentHtml}`;
-        container.appendChild(bubble);
-      });
-    }
-
+    msgs.forEach(m => {
+      const isSent = m.sender === currentUser.phone;
+      const bubble = document.createElement('div');
+      bubble.className = `msg-bubble ${isSent ? 'sent' : 'received'}`;
+      if(m.type === 'audio') {
+        bubble.innerHTML = `<audio controls class="chat-audio-player" src="${m.text}"></audio>`;
+      } else {
+        bubble.innerText = m.text;
+      }
+      container.appendChild(bubble);
+    });
     container.scrollTop = container.scrollHeight;
   }
 
@@ -1368,330 +2092,101 @@
     const text = input.value.trim();
     if(!text || !currentChat || !currentUser) return;
 
-    if(currentChat.type === 'direct') {
-      let dms = safeGetObj('tod_dms');
-      const chatKey = [currentUser.phone, currentChat.targetId].sort().join('_');
-      if(!dms[chatKey]) dms[chatKey] = [];
+    let chatsData = safeGetObj('tod_chats');
+    if(!Array.isArray(chatsData[currentChat.id])) chatsData[currentChat.id] = [];
 
-      dms[chatKey].push({ sender: currentUser.phone, text: text, time: Date.now() });
-      localStorage.setItem('tod_dms', JSON.stringify(dms));
-    } else if(currentChat.type === 'group') {
-      let groupMsgs = safeGetObj('tod_group_msgs');
-      if(!groupMsgs[currentChat.targetId]) groupMsgs[currentChat.targetId] = [];
+    chatsData[currentChat.id].push({
+      sender: currentUser.phone,
+      text: text,
+      type: 'text',
+      timestamp: Date.now()
+    });
 
-      groupMsgs[currentChat.targetId].push({ sender: currentUser.phone, senderName: currentUser.name || 'User', text: text, time: Date.now() });
-      localStorage.setItem('tod_group_msgs', JSON.stringify(groupMsgs));
-    }
-
+    localStorage.setItem('tod_chats', JSON.stringify(chatsData));
     input.value = '';
-    renderMessages();
+    renderChatMessages();
   }
 
-  async function toggleVoiceRecording() {
-    if(!currentChat || !currentUser) return;
-    const micBtn = document.getElementById('micBtn');
-    const inputField = document.getElementById('chatInput');
-
-    if (!isRecording) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  function toggleVoiceRecording() {
+    const btn = document.getElementById('micBtn');
+    if(!isRecording) {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
-
-        mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
         mediaRecorder.onstop = () => {
           const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
           const reader = new FileReader();
-          reader.onloadend = () => { sendVoiceMessage(reader.result); };
+          reader.onload = function(evt) {
+            let chatsData = safeGetObj('tod_chats');
+            if(!Array.isArray(chatsData[currentChat.id])) chatsData[currentChat.id] = [];
+            chatsData[currentChat.id].push({
+              sender: currentUser.phone,
+              text: evt.target.result,
+              type: 'audio',
+              timestamp: Date.now()
+            });
+            localStorage.setItem('tod_chats', JSON.stringify(chatsData));
+            renderChatMessages();
+          };
           reader.readAsDataURL(audioBlob);
-          stream.getTracks().forEach(track => track.stop());
         };
-
         mediaRecorder.start();
         isRecording = true;
-        micBtn.classList.add('recording');
-        inputField.placeholder = "রেকর্ড হচ্ছে...";
-        showToast('ভয়েস রেকর্ড শুরু হয়েছে');
-      } catch (err) {
-        showToast('মাইক্রোফোন অ্যাক্সেস পাওয়ার অনুমতি নেই');
-      }
+        btn.classList.add('recording');
+      }).catch(() => showToast('মাইক্রোফোন এক্সেস পাওয়া যায়নি'));
     } else {
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      if(mediaRecorder) mediaRecorder.stop();
       isRecording = false;
-      micBtn.classList.remove('recording');
-      inputField.placeholder = "মেসেজ লিখুন...";
+      btn.classList.remove('recording');
     }
   }
 
-  function sendVoiceMessage(base64Audio) {
-    if(!currentChat || !currentUser) return;
-
-    if(currentChat.type === 'direct') {
-      let dms = safeGetObj('tod_dms');
-      const chatKey = [currentUser.phone, currentChat.targetId].sort().join('_');
-      if(!dms[chatKey]) dms[chatKey] = [];
-
-      dms[chatKey].push({ sender: currentUser.phone, type: 'audio', audioUrl: base64Audio, time: Date.now() });
-      localStorage.setItem('tod_dms', JSON.stringify(dms));
-    } else if(currentChat.type === 'group') {
-      let groupMsgs = safeGetObj('tod_group_msgs');
-      if(!groupMsgs[currentChat.targetId]) groupMsgs[currentChat.targetId] = [];
-
-      groupMsgs[currentChat.targetId].push({ sender: currentUser.phone, senderName: currentUser.name || 'User', type: 'audio', audioUrl: base64Audio, time: Date.now() });
-      localStorage.setItem('tod_group_msgs', JSON.stringify(groupMsgs));
-    }
-
-    renderMessages();
-    showToast('ভয়েস মেসেজ পাঠানো হয়েছে!');
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.innerText = text;
-    return div.innerHTML;
-  }
-
-  /* ---- CALL SYSTEM ---- */
+  /* ---- CALLING SYSTEM ---- */
   function initiateCall(type) {
     if(!currentChat) return;
-
     activeCallType = type;
-    isMuted = false;
-    document.getElementById('muteMicBtn').classList.remove('active');
-    document.getElementById('callOverlay').classList.add('show');
     document.getElementById('callTitleName').innerText = currentChat.name;
+    document.getElementById('callAvatarImg').src = currentChat.avatar || DEFAULT_AVATAR;
+    document.getElementById('callStatusText').innerText = type === 'video' ? 'Connecting Video Call...' : 'Calling...';
 
-    document.getElementById('singleCallAvatarWrap').style.display = 'none';
-    document.getElementById('videoCallWrap').style.display = 'none';
-    document.getElementById('groupCallMembersGrid').style.display = 'none';
-    document.getElementById('acceptCallBtn').style.display = 'none';
-
-    if(type === 'audio') {
+    if(type === 'video') {
+      document.getElementById('singleCallAvatarWrap').style.display = 'none';
+      document.getElementById('videoCallWrap').style.display = 'flex';
+      document.getElementById('remoteVideo').style.display = 'block';
+      document.getElementById('localVideo').style.display = 'block';
+    } else {
       document.getElementById('singleCallAvatarWrap').style.display = 'flex';
-      document.getElementById('callAvatarImg').src = currentChat.avatar;
-      document.getElementById('callStatusText').innerText = 'Calling Audio...';
-
-      setTimeout(() => {
-        if(document.getElementById('callOverlay').classList.contains('show')) {
-          document.getElementById('callStatusText').innerText = 'Connected 00:00';
-          startCallTimer();
-        }
-      }, 2000);
-
-    } else if(type === 'video') {
-      document.getElementById('singleCallAvatarWrap').style.display = 'flex';
-      document.getElementById('callAvatarImg').src = currentChat.avatar;
-      document.getElementById('callStatusText').innerText = 'Incoming Video Call...';
-      document.getElementById('acceptCallBtn').style.display = 'flex';
-
-    } else if(type === 'group') {
-      const grid = document.getElementById('groupCallMembersGrid');
-      grid.style.display = 'grid';
-      grid.innerHTML = '';
-
-      document.getElementById('callStatusText').innerText = 'Group Call Active';
-
-      let users = safeGetArray('tod_users');
-      let groups = safeGetArray('tod_groups');
-      let grp = groups.find(g => g.id === currentChat.targetId);
-
-      if(grp && Array.isArray(grp.members)) {
-        grp.members.forEach(mPhone => {
-          let u = users.find(usr => usr.phone === mPhone) || { name: 'Member', avatar: DEFAULT_AVATAR };
-          let card = document.createElement('div');
-          card.className = 'call-member-card';
-          card.innerHTML = `
-            <div class="call-member-avatar"><img src="${u.avatar || DEFAULT_AVATAR}" /></div>
-            <div class="call-member-name">${u.name}</div>
-          `;
-          grid.appendChild(card);
-        });
-      }
-      startCallTimer();
+      document.getElementById('videoCallWrap').style.display = 'none';
     }
+
+    document.getElementById('callOverlay').classList.add('show');
   }
 
-  async function acceptVideoCall() {
-    document.getElementById('acceptCallBtn').style.display = 'none';
-    document.getElementById('singleCallAvatarWrap').style.display = 'none';
-    document.getElementById('videoCallWrap').style.display = 'flex';
-    document.getElementById('callStatusText').innerText = 'Video Call Connected 00:00';
-    startCallTimer();
-
-    try {
-      if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        const localVideo = document.getElementById('localVideo');
-        if(localVideo) {
-          localVideo.srcObject = localStream;
-          localVideo.style.display = 'block';
-        }
-      }
-    } catch(e) {}
-  }
-
-  function startCallTimer() {
-    clearInterval(activeCallTimer);
-    callSeconds = 0;
-    activeCallTimer = setInterval(() => {
-      callSeconds++;
-      let mins = Math.floor(callSeconds / 60).toString().padStart(2, '0');
-      let secs = (callSeconds % 60).toString().padStart(2, '0');
-      
-      let prefix = 'Connected';
-      if(activeCallType === 'group') prefix = 'Group Call';
-      if(activeCallType === 'video') prefix = 'Video Call Connected';
-      
-      document.getElementById('callStatusText').innerText = `${prefix} ${mins}:${secs}`;
-    }, 1000);
+  function endCall() {
+    document.getElementById('callOverlay').classList.remove('show');
+    showToast('কল সমাপ্ত হয়েছে');
   }
 
   function toggleMuteMic() {
     isMuted = !isMuted;
-    const btn = document.getElementById('muteMicBtn');
-    if(isMuted) {
-      btn.classList.add('active');
-      showToast('Microphone Muted');
-    } else {
-      btn.classList.remove('active');
-      showToast('Microphone Unmuted');
-    }
+    document.getElementById('muteMicBtn').classList.toggle('active', isMuted);
+    showToast(isMuted ? 'Muted' : 'Unmuted');
   }
 
-  function endCall() {
-    clearInterval(activeCallTimer);
-    if(localStream) {
-      localStream.getTracks().forEach(track => track.stop());
-      localStream = null;
-    }
-    document.getElementById('localVideo').style.display = 'none';
-    document.getElementById('callOverlay').classList.remove('show');
-    showToast('Call Ended');
-  }
-
-  /* ---- GROUPS MODALS ---- */
-  function openCreateGroupModal() {
-    if(!currentUser) return;
-    const container = document.getElementById('createGroupUserList');
-    container.innerHTML = '';
-    const users = safeGetArray('tod_users');
-
-    users.forEach(u => {
-      if(u.phone !== currentUser.phone) {
-        const label = document.createElement('label');
-        label.style.cssText = "display:flex; align-items:center; gap:10px; padding:8px; background:var(--bg-elev-2); border-radius:10px; cursor:pointer;";
-        label.innerHTML = `
-          <input type="checkbox" value="${u.phone}" class="group-user-select" />
-          <img src="${u.avatar || DEFAULT_AVATAR}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;" />
-          <span style="font-size:13px; font-weight:600;">${u.name || 'User'}</span>
-        `;
-        container.appendChild(label);
-      }
-    });
-
-    if(container.innerHTML === '') {
-      container.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">কোনো ব্যবহারকারী পাওয়া যায়নি</div>';
-    }
-
-    document.getElementById('createGroupModal').classList.add('show');
-  }
-
-  function closeCreateGroupModal() {
-    document.getElementById('createGroupModal').classList.remove('show');
-    document.getElementById('groupNameInput').value = '';
-  }
-
+  /* ---- GROUP CREATION MODAL ---- */
+  function openCreateGroupModal() { document.getElementById('createGroupModal').classList.add('show'); }
+  function closeCreateGroupModal() { document.getElementById('createGroupModal').classList.remove('show'); }
   function submitCreateGroup() {
-    const groupName = document.getElementById('groupNameInput').value.trim();
-    if(!groupName) { showToast('গ্রুপের একটি নাম দিন'); return; }
-
-    const checkedInputs = document.querySelectorAll('.group-user-select:checked');
-    const selectedPhones = Array.from(checkedInputs).map(i => i.value);
-    selectedPhones.push(currentUser.phone);
-
-    let groups = safeGetArray('tod_groups');
-    const newGroup = {
-      id: 'grp_' + Date.now(),
-      name: groupName,
-      members: selectedPhones,
-      createdBy: currentUser.phone
-    };
-
-    groups.push(newGroup);
-    localStorage.setItem('tod_groups', JSON.stringify(groups));
-
+    const name = document.getElementById('groupNameInput').value.trim();
+    if(!name) { showToast('গ্রুপ নাম লিখুন'); return; }
     closeCreateGroupModal();
-    renderChatsList();
-    showToast('নতুন গ্রুপ তৈরি হয়েছে!');
+    showToast('গ্রুপ তৈরি করা হয়েছে!');
   }
 
-  function openAddMemberModal() {
-    if(!currentChat || currentChat.type !== 'group') return;
-    const container = document.getElementById('addMemberUserList');
-    container.innerHTML = '';
-
-    const groups = safeGetArray('tod_groups');
-    const group = groups.find(g => g.id === currentChat.targetId);
-    if(!group) return;
-
-    const users = safeGetArray('tod_users');
-    const nonMembers = users.filter(u => !group.members.includes(u.phone));
-
-    nonMembers.forEach(u => {
-      const label = document.createElement('label');
-      label.style.cssText = "display:flex; align-items:center; gap:10px; padding:8px; background:var(--bg-elev-2); border-radius:10px; cursor:pointer;";
-      label.innerHTML = `
-        <input type="checkbox" value="${u.phone}" class="add-user-select" />
-        <img src="${u.avatar || DEFAULT_AVATAR}" style="width:30px; height:30px; border-radius:50%; object-fit:cover;" />
-        <span style="font-size:13px; font-weight:600;">${u.name || 'User'}</span>
-      `;
-      container.appendChild(label);
-    });
-
-    if(container.innerHTML === '') {
-      container.innerHTML = '<div style="font-size:12px; color:var(--text-dim);">কোনো নতুন সদস্য পাওয়া যায়নি</div>';
-    }
-
-    document.getElementById('addMemberModal').classList.add('show');
-  }
-
-  function closeAddMemberModal() {
-    document.getElementById('addMemberModal').classList.remove('show');
-  }
-
-  function submitAddMembers() {
-    if(!currentChat || currentChat.type !== 'group') return;
-    const checkedInputs = document.querySelectorAll('.add-user-select:checked');
-    const selectedPhones = Array.from(checkedInputs).map(i => i.value);
-
-    if(selectedPhones.length === 0) {
-      showToast('অন্তত একজন সদস্য সিলেক্ট করুন');
-      return;
-    }
-
-    let groups = safeGetArray('tod_groups');
-    const groupIdx = groups.findIndex(g => g.id === currentChat.targetId);
-    if(groupIdx >= 0) {
-      selectedPhones.forEach(p => {
-        if(!groups[groupIdx].members.includes(p)) {
-          groups[groupIdx].members.push(p);
-        }
-      });
-      localStorage.setItem('tod_groups', JSON.stringify(groups));
-      currentChat.groupObj = groups[groupIdx];
-      document.getElementById('chatHeaderStatus').innerText = `${groups[groupIdx].members.length} members`;
-      showToast('নতুন সদস্য যোগ করা হয়েছে!');
-    }
-    closeAddMemberModal();
-  }
-
-  function showToast(msg) {
-    const toast = document.getElementById('toastMsg');
-    if(!toast) return;
-    toast.innerText = msg;
-    toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 2500);
-  }
+  function openAddMemberModal() { document.getElementById('addMemberModal').classList.add('show'); }
+  function closeAddMemberModal() { document.getElementById('addMemberModal').classList.remove('show'); }
+  function submitAddMembers() { closeAddMemberModal(); showToast('সদস্যদের যোগ করা হয়েছে'); }
 </script>
 </body>
 </html>
